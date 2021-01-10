@@ -3,9 +3,11 @@ const jobController = require('../controllers/jobController');
 
 const router = express.Router();
 
+router.route('/').get(jobController.getJobs).post(jobController.createJob);
+
 router
-	.route('/')
-	.get(jobController.getJobs)
-	.post(jobController.createJob);
+	.route('/:id')
+	.patch(jobController.updateJob)
+	.delete(jobController.deleteJob);
 
 module.exports = router;

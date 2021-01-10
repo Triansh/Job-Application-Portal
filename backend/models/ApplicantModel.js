@@ -13,11 +13,13 @@ const applicantSchema = new mongoose.Schema({
 		lowercase: true,
 		validate: [validator.isEmail, 'Please provie a correct email'],
 	},
-	education: {
-		institution: { type: String },
-		startYear: { type: Date },
-		endYear: { type: Date },
-	},
+	education: [
+		{
+			institution: { type: String },
+			startYear: { type: Date },
+			endYear: { type: Date },
+		},
+	],
 });
 
 const applicantModel = mongoose.model('Applicant', applicantSchema);

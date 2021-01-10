@@ -55,6 +55,7 @@ const jobSchema = new mongoose.Schema({
 jobSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'recruiter',
+		select: '-__v',
 	});
 	next();
 });
