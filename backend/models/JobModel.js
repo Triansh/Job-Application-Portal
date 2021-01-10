@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { JOB_STATUS } = require('../utils/status');
 
 const jobSchema = new mongoose.Schema({
 	title: {
@@ -44,6 +45,10 @@ const jobSchema = new mongoose.Schema({
 		type: Number,
 		min: [0, 'The number of months should be greater than zero'],
 		required: [true, 'Please specify the salary per month'],
+	},
+	status: {
+		type: String,
+		default: JOB_STATUS.AVAILABLE,
 	},
 });
 

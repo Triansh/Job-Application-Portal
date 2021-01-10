@@ -18,10 +18,12 @@ const applicationSchema = new mongoose.Schema({
 
 applicationSchema.pre(/^find/, function (next) {
 	this.populate({
-		path: 'recruiter',
+		path: 'job',
+		select: '-__v',
 	});
 	this.populate({
 		path: 'applicant',
+		select: '-__v',
 	});
 	next();
 });
