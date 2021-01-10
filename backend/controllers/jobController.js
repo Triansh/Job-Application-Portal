@@ -1,14 +1,17 @@
 const Job = require('../models/JobModel');
+const BasicFilter = require('../utils/BasicFilter');
 
 exports.getJobs = async (req, res) => {
+	const filteredJob = new BasicFilter(Job.find(), req.query).filter().sort();
+
 	try {
-		const job = await Job.find();
-		console.log(job);
+		const job = await filteredJob.query;
 		res.status(201).json({
 			status: 'success',
 			data: job,
 		});
 	} catch (e) {
+		console.log(e);
 		res.status(400).json({
 			status: 'failure',
 			error: e,

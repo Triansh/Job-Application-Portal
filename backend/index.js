@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const app = require('./app');
 
-const DB = process.env.DATABASE_LOCAL;
+const DB = process.env.DATABASE_ATLAS;
 const PORT = process.env.PORT || 5000;
 
 mongoose

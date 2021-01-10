@@ -1,18 +1,8 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+
+const userModel = require('./UserModel');
 
 const applicantSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: [true, 'Name is required'],
-	},
-	email: {
-		type: String,
-		required: [true, 'A user must have an email'],
-		unique: true,
-		lowercase: true,
-		validate: [validator.isEmail, 'Please provie a correct email'],
-	},
 	education: [
 		{
 			institution: { type: String },
@@ -22,6 +12,6 @@ const applicantSchema = new mongoose.Schema({
 	],
 });
 
-const applicantModel = mongoose.model('Applicant', applicantSchema);
+const applicantModel = userModel.discriminator('Applicant', applicantSchema);
 
 module.exports = applicantModel;

@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 const { APPLICATION_STATUS } = require('../utils/status');
+const userModel = require('./UserModel');
 
-const applicationSchema = new mongoose.Schema({
-	job: {
-		type: mongoose.Schema.ObjectId,
-		ref: 'Job',
+const applicationSchema = new mongoose.Schema(
+	{
+		job: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Job',
+		},
+		applicant: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Applicant',
+		},
+		status: {
+			type: String,
+			default: APPLICATION_STATUS.NONE,
+		},
 	},
-	applicant: {
-		type: mongoose.Schema.ObjectId,
-		ref: 'Applicant',
-	},
-	status: {
-		type: String,
-		default: APPLICATION_STATUS.NONE,
-	},
-});
+	{ collection: 'Application' }
+);
 
 applicationSchema.pre(/^find/, function (next) {
 	this.populate({
