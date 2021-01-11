@@ -4,6 +4,7 @@ const recruiterRoutes = require('./routes/recruiterRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicantRoutes = require('./routes/applicantRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
+const userRoutes = require('./auth/routes');
 const { handleGlobalError } = require('./utils/errorHandler');
 const AppError = require('./utils/AppError');
 
@@ -17,6 +18,7 @@ app.use('/api/recruiters', recruiterRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applicants', applicantRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/users', userRoutes);
 
 // NOT FOUND ROUTES
 app.all('*', (req, res, next) =>

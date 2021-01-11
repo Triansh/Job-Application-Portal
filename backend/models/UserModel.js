@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema(
 		email: {
 			type: String,
 			required: [true, 'A user must have an email'],
-			unique: [true, 'This email already exists. Try with a different one.'],
+			unique: [
+				true,
+				'This email already exists. Try with a different one.',
+			],
 			lowercase: true,
 			validate: [validator.isEmail, 'Please provie a correct email'],
 		},
@@ -24,19 +27,11 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function (next) {
-	const user = this;
 	const hash = await bcrypt.hash(this.password, 12);
-
 	this.password = hash;
 	next();
 });
 
-userSchema.methods.isValidPassword = async function (password) {
-	const user = this;
-	const compare = await bcrypt.compare(password, user.password);
-
-	return compare;
-};
 
 const userModel = mongoose.model('User', userSchema);
 
