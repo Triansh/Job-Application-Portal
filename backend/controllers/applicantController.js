@@ -4,19 +4,19 @@ const AppError = require('../utils/AppError');
 
 
 exports.getApplicants = handleAsync(async (req, res, next) => {
-	const doc = await Applicant.find();
-	console.log(doc);
+	const user = await Applicant.find();
+	console.log(user);
 	res.status(201).json({
 		status: 'success',
-		data: doc,
+		data: user,
 	});
 });
 
 exports.createApplicant = handleAsync(async (req, res, next) => {
 	console.log(req.body);
-	const doc = await Applicant.create(req.body);
+	const user = await Applicant.create(req.body);
 	res.status(201).json({
 		status: 'success',
-		data: doc,
+		data: user,
 	});
 });

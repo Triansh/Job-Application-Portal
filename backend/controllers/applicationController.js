@@ -9,7 +9,6 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 		.sort();
 
 	const apps = await filteredApplications.query;
-	console.log(apps);
 	res.status(200).json({
 		status: 'success',
 		data: apps,
@@ -18,10 +17,10 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 
 exports.createApplication = handleAsync(async (req, res, next) => {
 	console.log(req.body);
-	const apps = await Application.create(req.body);
+	const app = await Application.create(req.body);
 	res.status(201).json({
 		status: 'success',
-		data: apps,
+		data: app,
 	});
 });
 
