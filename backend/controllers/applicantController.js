@@ -1,33 +1,22 @@
 const Applicant = require('../models/ApplicantModel');
+const { handleAsync } = require('../utils/errorHandler');
+const AppError = require('../utils/AppError');
 
-exports.getApplicants = async (req, res) => {
-	try {
-		const doc = await Applicant.find();
-		console.log(doc);
-		res.status(201).json({
-			status: 'success',
-			data: doc,
-		});
-	} catch (e) {
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
 
-exports.createApplicant = async (req, res) => {
-	try {
-		console.log(req.body);
-		const doc = await Applicant.create(req.body);
-		res.status(201).json({
-			status: 'success',
-			data: doc,
-		});
-	} catch (e) {
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
+exports.getApplicants = handleAsync(async (req, res, next) => {
+	const doc = await Applicant.find();
+	console.log(doc);
+	res.status(201).json({
+		status: 'success',
+		data: doc,
+	});
+});
+
+exports.createApplicant = handleAsync(async (req, res, next) => {
+	console.log(req.body);
+	const doc = await Applicant.create(req.body);
+	res.status(201).json({
+		status: 'success',
+		data: doc,
+	});
+});

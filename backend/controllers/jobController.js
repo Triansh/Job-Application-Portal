@@ -1,79 +1,45 @@
 const Job = require('../models/JobModel');
 const BasicFilter = require('../utils/BasicFilter');
+const { handleAsync } = require('../utils/errorHandler');
+const AppError = require('../utils/AppError');
 
-exports.getJobs = async (req, res) => {
+exports.getJobs = handleAsync(async (req, res, next) => {
 	const filteredJob = new BasicFilter(Job.find(), req.query).filter().sort();
 
-	try {
-		const job = await filteredJob.query;
-		res.status(201).json({
-			status: 'success',
-			data: job,
-		});
-	} catch (e) {
-		console.log(e);
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
+	const job = await filteredJob.query;
+	res.status(201).json({
+		status: 'success',
+		data: job,
+	});
+});
 
-exports.createJob = async (req, res) => {
-	try {
-		console.log(req.body);
-		const job = await Job.create(req.body);
-		res.status(201).json({
-			status: 'success',
-			data: job,
-		});
-	} catch (e) {
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
+exports.createJob = handleAsync(async (req, res, next) => {
+	console.log(req.body);
+	const job = await Job.create(req.body);
+	res.status(201).json({
+		status: 'success',
+		data: job,
+	});
+});
 
-exports.updateJob = async (req, res, next) => {
-	try {
-		const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-			runValidators: true,
-		});
-		if (!job)
-			return res.status(404).json({
-				status: 'failure',
-				error: e,
-			});
-		res.status(202).json({
-			status: 'success',
-			data: job,
-		});
-	} catch (e) {
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
+exports.updateJob = handleAsync(async (req, res, next) => {
+	const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+	if (!job)
+		return next(new AppError('No such job exists. Update failed.', 404));
+	res.status(202).json({
+		status: 'success',
+		data: job,
+	});
+});
 
-exports.deleteJob = async (req, res, next) => {
-	try {
-		const job = await Job.findByIdAndDelete(req.params.id);
-		if (!job) {
-			return res.status(404).json({
-				status: 'failure',
-				error: 'Page Not found',
-			});
-		}
-		res.status(204).json({
-			status: 'success',
-		});
-	} catch (e) {
-		res.status(400).json({
-			status: 'failure',
-			error: e,
-		});
-	}
-};
+exports.deleteJob = handleAsync(async (req, res, next) => {
+	const job = await Job.findByIdAndDelete(req.params.id);
+	if (!job)
+		return next(new AppError('No such job exists. Delete failed.', 404));
+	res.status(204).json({
+		status: 'success',
+	});
+});
