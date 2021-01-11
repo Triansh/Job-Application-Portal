@@ -43,3 +43,9 @@ exports.deleteJob = handleAsync(async (req, res, next) => {
 		status: 'success',
 	});
 });
+
+
+exports.getAllActiveJobs = handleAsync(async(req, res, next) => {
+	
+
+})

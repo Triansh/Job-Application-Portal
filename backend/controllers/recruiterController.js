@@ -3,7 +3,7 @@ const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 
 exports.getRecruiters = handleAsync(async (req, res, next) => {
-	const user = await Recruiter.find();
+	const user = await Recruiter.find().populate('jobs');
 	res.status(201).json({
 		status: 'success',
 		data: user,
@@ -18,3 +18,4 @@ exports.createRecruiter = handleAsync(async (req, res, next) => {
 		data: user,
 	});
 });
+

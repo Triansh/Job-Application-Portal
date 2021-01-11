@@ -10,6 +10,9 @@ const applicantSchema = new mongoose.Schema({
 			endYear: { type: Date },
 		},
 	],
+	skills: {
+		type: [String],
+	},
 });
 
 const applicantModel = userModel.discriminator('Applicant', applicantSchema);

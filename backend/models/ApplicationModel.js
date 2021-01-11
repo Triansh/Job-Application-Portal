@@ -12,6 +12,9 @@ const applicationSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'Applicant',
 		},
+		sop: {
+			type: String,
+		},
 		status: {
 			type: String,
 			default: APPLICATION_STATUS.APPLIED,
@@ -47,7 +50,10 @@ applicationSchema.post(
 			await this.model.updateMany(
 				{
 					applicant: _id,
-					status: { $ne: APPLICATION_STATUS.ACCEPTED },
+					status: {
+						$ne: APPLICATION_STATUS.ACCEPTED,
+						$ne: APPLICATION_STATUS.CANCELLED,
+					},
 				},
 				{ status: APPLICATION_STATUS.REJECTED }
 			);

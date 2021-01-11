@@ -23,7 +23,8 @@ const userSchema = new mongoose.Schema(
 			required: [true, 'Please provide a password'],
 		},
 	},
-	{ discriminatorKey: 'role', collection: 'User' }
+    { discriminatorKey: 'role', collection: 'User',
+ }
 );
 
 userSchema.pre('save', async function (next) {

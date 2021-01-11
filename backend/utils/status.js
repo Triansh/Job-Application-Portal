@@ -8,4 +8,5 @@ exports.APPLICATION_STATUS = {
 	APPLIED:    'Applied',
 	ACCEPTED:   'Accepted',
 	REJECTED:   'Rejected',
+	CANCELLED: 	'Cancelled'
 };
