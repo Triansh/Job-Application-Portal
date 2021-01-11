@@ -5,7 +5,12 @@ const router = express.Router();
 
 router
 	.route('/')
-	.get(applicationController.getApplications)
+	.get(applicationController.getAllApplications)
 	.post(applicationController.createApplication);
+
+router
+	.route('/:id')
+	.get(applicationController.getApplication)
+	.patch(applicationController.updateApplication);
 
 module.exports = router;

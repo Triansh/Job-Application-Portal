@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { JOB_STATUS } = require('../utils/status');
 
 const jobSchema = new mongoose.Schema(
@@ -51,8 +52,13 @@ const jobSchema = new mongoose.Schema(
 			type: String,
 			default: JOB_STATUS.AVAILABLE,
 		},
+		
 	},
-	{ collection: 'Job' }
+	{
+		collection: 'Job',
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
 );
 
 jobSchema.pre(/^find/, function (next) {
@@ -61,6 +67,12 @@ jobSchema.pre(/^find/, function (next) {
 		select: '-__v',
 	});
 	next();
+});
+
+jobSchema.virtual('rating', {
+	ref: 'Application',
+	foreignField: 'job',
+	localField: '_id',
 });
 
 const jobModel = mongoose.model('Job', jobSchema);
