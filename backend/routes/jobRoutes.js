@@ -1,15 +1,26 @@
 const express = require('express');
+
 const jobController = require('../controllers/jobController');
+const { protect, restrictUsers } = require('../auth/authorization');
+const { ROLES } = require('../utils/constants');
 
 const router = express.Router();
 
-router.route('/')
-.get(jobController.getJobs)
-.post(jobController.createJob);
+// FOR DEBUGGING PURPOSES
+router.route('/all').get(jobController.getJobs);
+
+router.use(protect);
+router.use(restrictUsers(ROLES.RECRUITER));
+
+router.route('/').post(jobController.createJob);
 
 router
 	.route('/:id')
 	.patch(jobController.updateJob)
 	.delete(jobController.deleteJob);
+
+router
+	.route('/active')
+	.get(restrictUsers(ROLES.RECRUITER), jobController.getAllActiveJobs);
 
 module.exports = router;

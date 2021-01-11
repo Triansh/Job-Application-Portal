@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { JOB_STATUS } = require('../utils/status');
+const { JOB_STATUS } = require('../utils/constants');
 
 const jobSchema = new mongoose.Schema(
 	{
@@ -61,13 +61,14 @@ const jobSchema = new mongoose.Schema(
 	}
 );
 
-jobSchema.pre(/^find/, function (next) {
-	this.populate({
-		path: 'recruiter',
-		select: '-__v',
-	});
-	next();
-});
+
+// jobSchema.pre(/^find/, function (next) {
+// 	this.populate({
+// 		path: 'recruiter',
+// 		select: '-__v',
+// 	});
+// 	next();
+// });
 
 jobSchema.virtual('rating', {
 	ref: 'Application',

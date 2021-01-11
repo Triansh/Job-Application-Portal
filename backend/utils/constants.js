@@ -10,3 +10,8 @@ exports.APPLICATION_STATUS = {
 	REJECTED:   'Rejected',
 	CANCELLED: 	'Cancelled'
 };
+
+exports.ROLES = {
+	RECRUITER: 'Recruiter',
+	APPLICANT: 'Applicant',
+}

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { APPLICATION_STATUS } = require('../utils/status');
+const { APPLICATION_STATUS } = require('../utils/constants');
 const userModel = require('./UserModel');
 
 const applicationSchema = new mongoose.Schema(
