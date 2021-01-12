@@ -20,10 +20,13 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 });
 
 exports.createApplication = handleAsync(async (req, res, next) => {
-	console.log(req.body);
-
 	const job = await Job.findById(req.body.job);
-	if (!job) return next(new AppError('No such job exists', 400));
+	if (!job) return next(new AppError('No such job exists', 404));
+
+	if (new Date(job.deadline) <= Date.now())
+		return next(
+			new AppError('Deadline for this application has passed', 400)
+		);
 
 	const app = await Application.create({
 		job: req.body.job,
