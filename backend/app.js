@@ -4,6 +4,7 @@ const cors = require('cors');
 const jobRoutes = require('./routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const userRoutes = require('./routes/userRoutes');
+const ratingRoutes = require('./routes/ratingRoutes');
 
 const { handleGlobalError } = require('./utils/errorHandler');
 const AppError = require('./utils/AppError');
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/rating', ratingRoutes);
 
 // NOT FOUND ROUTES
 app.all('*', (req, res, next) =>
