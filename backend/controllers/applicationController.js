@@ -89,20 +89,12 @@ exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
 	if (req.user._id.toString() !== job.recruiter.toString())
 		return next(new AppError('Permission denied for this action', 403));
 
-	// const filter = { job: new ObjectId(req.params.id), recruiter: new ObjectId(req.user._id) };
 	const filter = {
 		$and: [{ job: req.params.id }, { recruiter: req.user._id }],
 	};
 
-	const ap = await Application.find(filter);
-	const apps = await Application.aggregate([
-		{ $match: { job: req.params.id } },
-		// { $unwind: '$applicant' },
-		// { $sort: { 'applicant.name': 1 } },
-		// { $group: { _id: '$_id', applicant: { $push: '$applicant' } } },
-	]);
+	const apps = await Application.find(filter);
 
-	// const apps = await filteredApps;
 	res.status(200).json({
 		status: 'success',
 		data: { apps },

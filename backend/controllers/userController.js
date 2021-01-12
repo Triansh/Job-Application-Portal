@@ -6,9 +6,17 @@ const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 const { ROLES } = require('../utils/constants');
 
+// FOR DEBUGGING
+exports.getAllUsers = handleAsync(async (req, res, next) => {
+	const users = await User.find();
+	res.status(200).json({
+		status: 'success',
+		data: { users },
+	});
+});
+
 exports.getUser = handleAsync(async (req, res, next) => {
 	const user = await User.findById(req.user._id);
-	console.log(user);
 	res.status(201).json({
 		status: 'success',
 		data: { user },
@@ -51,10 +59,3 @@ exports.updateUser = handleAsync(async (req, res, next) => {
 	});
 });
 
-exports.getAllUsers = handleAsync(async (req, res, next) => {
-	const users = await User.find();
-	res.status(200).json({
-		status: 'success',
-		data: { users },
-	});
-});

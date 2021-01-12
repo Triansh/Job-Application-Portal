@@ -33,6 +33,21 @@ const applicantSchema = new mongoose.Schema({
 	skills: {
 		type: [String],
 	},
+
+	review: [
+		{
+			rating: {
+				type: Number,
+				required: [true, 'A review must have a rating'],
+				min: [1, 'Rating must be atleast 1.'],
+				max: [5, 'Rating cam be upto 5'],
+			},
+			rater: {
+				type: mongoose.Schema.ObjectId,
+				ref: 'Recruiter',
+			},
+		},
+	],
 });
 
 const applicantModel = userModel.discriminator('Applicant', applicantSchema);

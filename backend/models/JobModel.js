@@ -81,6 +81,20 @@ const jobSchema = new mongoose.Schema(
 			type: String,
 			default: JOB_STATUS.AVAILABLE,
 		},
+		review: [
+			{
+				rating: {
+					type: Number,
+					required: [true, 'A review must have a rating'],
+					min: [1, 'Rating must be atleast 1.'],
+					max: [5, 'Rating cam be upto 5'],
+				},
+				rater: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Applicant',
+				},
+			},
+		],
 	},
 	{
 		collection: 'Job',
