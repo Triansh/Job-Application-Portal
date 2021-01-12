@@ -7,7 +7,7 @@ const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 
 exports.rateJob = handleAsync(async (req, res, next) => {
-	// applocation id in params
+	// application id in params
 	const app = await Application.findById(req.params.id);
 	if (!app) return next(new AppError('No such application found', 404));
 
@@ -53,7 +53,7 @@ exports.rateEmployee = handleAsync(async (req, res, next) => {
 		rater: req.user._id,
 	};
 
-	const employee = Applicant.findByIdAndUpdate(
+	const employee = await Applicant.findByIdAndUpdate(
 		req.params.id,
 		{
 			$push: { review: newReview },
