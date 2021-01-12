@@ -6,7 +6,7 @@ const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 const { ROLES } = require('../utils/constants');
 
-// FOR DEBUGGING
+// --------------------------------------------------------- DEBUGGING
 exports.getAllUsers = handleAsync(async (req, res, next) => {
 	const users = await User.find();
 	res.status(200).json({
@@ -22,7 +22,9 @@ exports.getUser = handleAsync(async (req, res, next) => {
 		data: { user },
 	});
 });
+// --------------------------------------------------------------
 
+// Any user can update its profile
 exports.updateUser = handleAsync(async (req, res, next) => {
 	const options = {
 		new: true,

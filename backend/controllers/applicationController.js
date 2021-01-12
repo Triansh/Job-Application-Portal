@@ -4,9 +4,18 @@ const Job = require('../models/JobModel');
 const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
-const { APPLICATION_STATUS } = require('../utils/constants');
+const { APPLICATION_STATUS, JOB_STATUS } = require('../utils/constants');
 
-// FOR DEBUGGING
+// ---------------------------------------------------------------- DEBUGGING
+exports.getApplication = handleAsync(async (req, res, next) => {
+	const app = await Application.findById(req.params.id);
+	if (!app) return next(new AppError('The application doesnot exist.', 404));
+
+	res.status(200).json({
+		status: 'success',
+		data: { app },
+	});
+});
 exports.getAllApplications = handleAsync(async (req, res, next) => {
 	const filteredApplications = new BasicFilter(Application.find(), req.query)
 		.filter()
@@ -18,10 +27,29 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 		data: { apps },
 	});
 });
+// --------------------------------------------------------------------
 
+// This is for creating application for a job by applicant
 exports.createApplication = handleAsync(async (req, res, next) => {
 	const job = await Job.findById(req.params.id);
 	if (!job) return next(new AppError('No such job exists', 404));
+
+	if (job.status === JOB_STATUS.FULL)
+		return next(
+			new AppError(
+				'All recruitments are already made.\nUnsuccessful Attempt.',
+				403
+			)
+		);
+
+	const jobApps = await Application.countDocuments({ job: req.params.id });
+	if (jobApps >= job.positions)
+		return next(
+			new AppError(
+				'Maximum limit of Applications reached.\nUnsuccessful Attempt.',
+				403
+			)
+		);
 
 	if (new Date(job.deadline) <= Date.now())
 		return next(
@@ -40,13 +68,60 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 	});
 });
 
+// This shows all active applications of a job for recruiter
+exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
+	const job = await Job.findById(req.params.id);
+	if (!job) return next(new AppError('No such job exists', 404));
+
+	if (req.user._id.toString() !== job.recruiter.toString())
+		return next(new AppError('Permission denied for this action', 403));
+
+	const filter = {
+		job: req.params.id,
+		recruiter: req.user._id,
+	};
+
+	const apps = await Application.find(filter);
+
+	res.status(200).json({
+		status: 'success',
+		data: { apps },
+	});
+});
+
+// This updates the status of application by recruiter
 exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 	const app = await Application.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
-	});
+	}).populate({ path: 'job', select: 'positions _id' });
 
 	if (!app) return next(new AppError('The application doesnot exist.', 404));
+
+	newStatus = app.status;
+	if (newStatus === APPLICATION_STATUS.ACCEPTED) {
+		const applicantId = app.applicant._id;
+
+		// CHECK JOBS TOTAL POSITIONS AND UPDATE STATUS
+		accepted = Application.countDocuments({
+			job: app.job._id,
+			status: APPLICATION_STATUS.ACCEPTED,
+		});
+		if (accepted >= app.job.positions) {
+			await findByIdAndUpdate(app.job._id, { status: JOB_STATUS.FULL });
+		}
+
+		// UPDATE REST APPLICATIONS OF APPLICANT TO REJECTED
+		const restApps = await Application.updateMany(
+			{
+				_id: { $ne: app._id },
+				applicant: applicantId,
+			},
+			{
+				status: APPLICATION_STATUS.REJECTED,
+			}
+		);
+	}
 
 	res.status(201).json({
 		status: 'success',
@@ -54,16 +129,7 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 	});
 });
 
-exports.getApplication = handleAsync(async (req, res, next) => {
-	const app = await Application.findById(req.params.id);
-	if (!app) return next(new AppError('The application doesnot exist.', 404));
-
-	res.status(200).json({
-		status: 'success',
-		data: { app },
-	});
-});
-
+// This gives all the employees of a recruiter
 exports.getMyEmployees = handleAsync(async (req, res, next) => {
 	const filter = {
 		status: APPLICATION_STATUS.ACCEPTED,
@@ -77,6 +143,7 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 	});
 });
 
+// This gives all type of applications of the applicant
 exports.getMyApplications = handleAsync(async (req, res, next) => {
 	const apps = await Application.find({ applicant: req.user._id });
 	res.status(200).json({
@@ -85,26 +152,7 @@ exports.getMyApplications = handleAsync(async (req, res, next) => {
 	});
 });
 
-exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
-	const job = await Job.findById(req.params.id);
-	if (!job) return next(new AppError('No such job exists', 404));
-
-	if (req.user._id.toString() !== job.recruiter.toString())
-		return next(new AppError('Permission denied for this action', 403));
-
-	const filter = {
-		$and: [{ job: req.params.id }, { recruiter: req.user._id }],
-	};
-
-	const apps = await Application.find(filter);
-
-	res.status(200).json({
-		status: 'success',
-		data: { apps },
-		ap,
-	});
-});
-
+// This is a general middleware to check open applications of an applicant
 exports.checkOpenApplications = handleAsync(async (req, res, next) => {
 	const len = await Application.countDocuments({
 		status: { $ne: APPLICATION_STATUS.REJECTED },

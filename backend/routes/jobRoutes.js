@@ -13,7 +13,7 @@ router.route('/all').get(jobController.getJobs);
 router.use(protect);
 
 router
-	.route('/:id')
+	.route('/:id') // job id
 	.post(
 		restrictUsers(ROLES.APPLICANT),
 		applicationController.checkOpenApplications,
@@ -22,14 +22,15 @@ router
 
 router.use(restrictUsers(ROLES.RECRUITER));
 
-router.route('/').post(jobController.createJob);
-
-router.route('/active').get(jobController.getMyActiveJobs);
+router
+	.route('/')
+	.get(jobController.getMyActiveJobs)
+	.post(jobController.createJob);
 
 router
-	.route('/:id')
+	.route('/:id') // job id
+	.get(applicationController.getActiveApplicationsForJob)
 	.patch(jobController.updateJob)
-	.delete(jobController.deleteJob)
-	.get(applicationController.getActiveApplicationsForJob);
+	.delete(jobController.deleteJob);
 
 module.exports = router;

@@ -6,6 +6,20 @@ const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 
+// ---------------------------------------------------------------- DEBUGGING
+exports.getJobs = handleAsync(async (req, res, next) => {
+	const filteredJob = new BasicFilter(Job.find(), req.query).filter().sort();
+
+	const job = await filteredJob.query;
+	res.status(201).json({
+		status: 'success',
+		data: { job },
+	});
+});
+// -------------------------------------------------------------------
+
+
+// This gives all active jobs of a recruiter 
 exports.getMyActiveJobs = handleAsync(async (req, res, next) => {
 	const filter = { recruiter: req.user._id, status: JOB_STATUS.AVAILABLE };
 	const filteredJobs = new BasicFilter(Job.find(filter), req.query)
@@ -15,19 +29,21 @@ exports.getMyActiveJobs = handleAsync(async (req, res, next) => {
 	const jobs = await filteredJobs.query;
 	res.status(200).json({
 		status: 'success',
-		data: jobs,
+		data: { jobs },
 	});
 });
 
+// This creates a job by a recruiter
 exports.createJob = handleAsync(async (req, res, next) => {
 	console.log(req.body);
 	const job = await Job.create({ ...req.body, recruiter: req.user._id });
 	res.status(201).json({
 		status: 'success',
-		data: job,
+		data: { job },
 	});
 });
 
+// This updates a job by recruiter
 exports.updateJob = handleAsync(async (req, res, next) => {
 	let job = await Job.findById(req.params.id);
 	if (!job)
@@ -41,10 +57,11 @@ exports.updateJob = handleAsync(async (req, res, next) => {
 	});
 	res.status(202).json({
 		status: 'success',
-		data: job,
+		data: { job },
 	});
 });
 
+// This deletes a job with their respective applications by recruiter
 exports.deleteJob = handleAsync(async (req, res, next) => {
 	let job = await Job.findById(req.params.id);
 	if (!job)
@@ -59,15 +76,5 @@ exports.deleteJob = handleAsync(async (req, res, next) => {
 
 	res.status(204).json({
 		status: 'success',
-	});
-});
-
-exports.getJobs = handleAsync(async (req, res, next) => {
-	const filteredJob = new BasicFilter(Job.find(), req.query).filter().sort();
-
-	const job = await filteredJob.query;
-	res.status(201).json({
-		status: 'success',
-		data: job,
 	});
 });
