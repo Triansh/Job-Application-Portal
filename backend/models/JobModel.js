@@ -103,11 +103,11 @@ const jobSchema = new mongoose.Schema(
 	}
 );
 
-// jobSchema.virtual('rating', {
-// 	ref: 'Application',
-// 	foreignField: 'job',
-// 	localField: '_id',
-// });
+jobSchema.virtual('apps', {
+	ref: 'Application',
+	foreignField: 'job',
+	localField: '_id',
+});
 
 const jobModel = mongoose.model('Job', jobSchema);
 

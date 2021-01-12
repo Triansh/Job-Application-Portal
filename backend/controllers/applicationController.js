@@ -68,7 +68,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 	});
 });
 
-// This shows all active applications of a job for recruiter
+// This shows all non-rejected applications of a job for recruiter
 exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
 	const job = await Job.findById(req.params.id);
 	if (!job) return next(new AppError('No such job exists', 404));
@@ -79,6 +79,7 @@ exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
 	const filter = {
 		job: req.params.id,
 		recruiter: req.user._id,
+		status: { $ne: APPLICATION_STATUS.REJECTED },
 	};
 
 	const apps = await Application.find(filter);
@@ -117,9 +118,7 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 				_id: { $ne: app._id },
 				applicant: applicantId,
 			},
-			{
-				status: APPLICATION_STATUS.REJECTED,
-			}
+			{ status: APPLICATION_STATUS.REJECTED }
 		);
 	}
 
