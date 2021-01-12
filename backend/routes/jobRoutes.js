@@ -1,6 +1,7 @@
 const express = require('express');
 
 const jobController = require('../controllers/jobController');
+const applicationController = require('../controllers/applicationController');
 const { protect, restrictUsers } = require('../auth/authorization');
 const { ROLES } = require('../utils/constants');
 
@@ -19,6 +20,7 @@ router.route('/active').get(jobController.getMyActiveJobs);
 router
 	.route('/:id')
 	.patch(jobController.updateJob)
-	.delete(jobController.deleteJob);
+	.delete(jobController.deleteJob)
+	.get(applicationController.getActiveApplicationsForJob);
 
 module.exports = router;

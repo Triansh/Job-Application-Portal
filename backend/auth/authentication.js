@@ -6,7 +6,7 @@ const Recruiter = require('../models/RecruiterModel');
 const Applicant = require('../models/ApplicantModel');
 const AppError = require('../utils/AppError');
 const { handleAsync } = require('../utils/errorHandler');
-const {ROLES} = require('../utils/constants')
+const { ROLES } = require('../utils/constants');
 
 const createSignToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -38,7 +38,6 @@ exports.signup = handleAsync(async (req, res, next) => {
 	} else {
 		return next(new AppError('This is not a valid role.', 400));
 	}
-
 });
 
 exports.login = handleAsync(async (req, res, next) => {
@@ -47,7 +46,7 @@ exports.login = handleAsync(async (req, res, next) => {
 	if (!email || !password)
 		return next(new AppError('Please provide email and password', 400));
 
-	const user = await User.findOne({ email });
+	const user = await User.findOne({ email }).select('password');
 	if (!user) return next(new AppError('Invalid Credentials', 401));
 
 	const isMatch = await bcrypt.compare(password, user.password);

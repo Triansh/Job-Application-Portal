@@ -37,7 +37,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 	});
 });
 
-exports.updateApplication = handleAsync(async (req, res, next) => {
+exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 	const app = await Application.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
@@ -80,4 +80,43 @@ exports.getMyApplications = handleAsync(async (req, res, next) => {
 		status: 'success',
 		data: { apps },
 	});
+});
+
+exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
+	const job = await Job.findById(req.params.id);
+	if (!job) return next(new AppError('No such job exists', 404));
+
+	if (req.user._id.toString() !== job.recruiter.toString())
+		return next(new AppError('Permission denied for this action', 403));
+
+	// const filter = { job: new ObjectId(req.params.id), recruiter: new ObjectId(req.user._id) };
+	const filter = {
+		$and: [{ job: req.params.id }, { recruiter: req.user._id }],
+	};
+
+	const ap = await Application.find(filter);
+	const apps = await Application.aggregate([
+		{ $match: { job: req.params.id } },
+		// { $unwind: '$applicant' },
+		// { $sort: { 'applicant.name': 1 } },
+		// { $group: { _id: '$_id', applicant: { $push: '$applicant' } } },
+	]);
+
+	// const apps = await filteredApps;
+	res.status(200).json({
+		status: 'success',
+		data: { apps },
+		ap,
+	});
+});
+
+exports.checkOpenApplications = handleAsync(async (req, res, next) => {
+	const len = await Application.countDocuments({
+		status: { $ne: APPLICATION_STATUS.REJECTED },
+		applicant: req.user._id,
+	});
+
+	if (len >= 10)
+		return next(new AppError('There are already 10 open applications.'));
+	next();
 });

@@ -1,4 +1,6 @@
 const Job = require('../models/JobModel');
+const Application = require('../models/ApplicationModel');
+
 const { JOB_STATUS } = require('../utils/constants');
 const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
@@ -51,6 +53,9 @@ exports.deleteJob = handleAsync(async (req, res, next) => {
 		return next(new AppError('Permission denied for this action', 403));
 
 	job = await Job.findByIdAndDelete(req.params.id);
+
+	// CASCADE DELETION
+	await Application.deleteMany({ job: req.params.id });
 
 	res.status(204).json({
 		status: 'success',

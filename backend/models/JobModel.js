@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { checkInt } = require('../utils/validation');
 
 const { JOB_STATUS } = require('../utils/constants');
 
@@ -15,9 +16,23 @@ const jobSchema = new mongoose.Schema(
 		},
 		applications: {
 			type: Number,
+			validate: {
+				validator: function (v) {
+					return checkInt(v, 1);
+				},
+				message:
+					'The number of applications must be an integer greater than zero',
+			},
 		},
 		positions: {
 			type: Number,
+			validate: {
+				validator: function (v) {
+					return checkInt(v, 1);
+				},
+				message:
+					'The number of positions must be an integer greater than zero',
+			},
 		},
 		createdAt: {
 			type: Date,
@@ -25,9 +40,11 @@ const jobSchema = new mongoose.Schema(
 		},
 		deadline: {
 			type: Date,
+			required: [true, 'A deadline for application is required'],
 		},
 		skills: {
 			type: [String],
+			default: [],
 		},
 		type: {
 			type: String,
@@ -40,19 +57,30 @@ const jobSchema = new mongoose.Schema(
 		},
 		duration: {
 			type: Number,
-			min: [0, 'The number of months should be atleast zero'],
-			max: [6, 'The number of months should be atleast zero'],
+			required: [true, 'A duration must be specified'],
+			validate: {
+				validator: function (v) {
+					return checkInt(v, 1);
+				},
+				message:
+					'The number of months must be an integer greater than zero',
+			},
+			max: [6, 'The number of months must be an integer less than 7.'],
 		},
 		salary: {
 			type: Number,
-			min: [0, 'The number of months should be greater than zero'],
+			validate: {
+				validator: function (v) {
+					return checkInt(v, 1);
+				},
+				message: 'This must be a integer greater than zero',
+			},
 			required: [true, 'Please specify the salary per month'],
 		},
 		status: {
 			type: String,
 			default: JOB_STATUS.AVAILABLE,
 		},
-		
 	},
 	{
 		collection: 'Job',
@@ -60,15 +88,6 @@ const jobSchema = new mongoose.Schema(
 		toObject: { virtuals: true },
 	}
 );
-
-
-// jobSchema.pre(/^find/, function (next) {
-// 	this.populate({
-// 		path: 'recruiter',
-// 		select: '-__v',
-// 	});
-// 	next();
-// });
 
 jobSchema.virtual('rating', {
 	ref: 'Application',

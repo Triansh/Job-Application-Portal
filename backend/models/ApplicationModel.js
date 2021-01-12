@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { APPLICATION_STATUS } = require('../utils/constants');
+const { checkWords } = require('../utils/validation');
 const userModel = require('./UserModel');
 
 const applicationSchema = new mongoose.Schema(
@@ -18,10 +19,21 @@ const applicationSchema = new mongoose.Schema(
 		},
 		sop: {
 			type: String,
+			required: [true, 'A SOP is required for applying.'],
+			validate: {
+				validator: function (v) {
+					return checkWords(v, 250);
+				},
+				message: 'The SOP must be less than 250 words',
+			},
 		},
 		status: {
 			type: String,
 			default: APPLICATION_STATUS.APPLIED,
+		},
+		createdAt: {
+			type: Date,
+			default: Date.now(),
 		},
 	},
 	{ collection: 'Application' }
@@ -34,7 +46,7 @@ applicationSchema.pre(/^find/, function (next) {
 	// });
 	this.populate({
 		path: 'applicant',
-		select: '-__v',
+		select: '-__v ',
 	});
 	next();
 });

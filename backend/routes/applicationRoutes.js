@@ -18,6 +18,7 @@ router
 	)
 	.post(
 		restrictUsers(ROLES.APPLICANT),
+		applicationController.checkOpenApplications,
 		applicationController.createApplication
 	);
 
@@ -30,6 +31,9 @@ router.route('/my').get();
 router
 	.route('/:id')
 	.get(applicationController.getApplication)
-	.patch(applicationController.updateApplication);
+	.patch(
+		restrictUsers(ROLES.RECRUITER),
+		applicationController.updateApplicationStatus
+	);
 
 module.exports = router;

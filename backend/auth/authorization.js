@@ -23,7 +23,6 @@ exports.protect = handleAsync(async (req, res, next) => {
 
 	// GRANT ACCESS
 	req.user = currentUser;
-	console.log(req.user);
 	next();
 });
 

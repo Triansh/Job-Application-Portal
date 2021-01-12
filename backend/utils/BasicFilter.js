@@ -6,7 +6,7 @@ class BasicFilter {
 
 	filter() {
 		const queryObj = { ...this.queryString };
-		const fieldsToExclude = ['page', 'sort', 'fields', 'limit'];
+		const fieldsToExclude = ['sort', 'fields'];
 		fieldsToExclude.forEach((item) => delete queryObj[item]);
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(
@@ -18,8 +18,12 @@ class BasicFilter {
 	}
 
 	sort() {
+
+		console.log(this.queryString)
+
 		if (this.queryString.sort) {
 			const sortBy = this.queryString.sort.split(',').join(' ');
+			console.log(typeof(sortBy))
 			this.query = this.query.sort(sortBy);
 		} else {
 			this.query = this.query.sort('-createdAt');

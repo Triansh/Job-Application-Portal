@@ -21,10 +21,11 @@ const userSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: [true, 'Please provide a password'],
+			minlength: [8, 'Password should have atleast 8 characters'],
+			select: false,
 		},
 	},
-    { discriminatorKey: 'role', collection: 'User',
- }
+	{ discriminatorKey: 'role', collection: 'User' }
 );
 
 userSchema.pre('save', async function (next) {
@@ -32,7 +33,6 @@ userSchema.pre('save', async function (next) {
 	this.password = hash;
 	next();
 });
-
 
 const userModel = mongoose.model('User', userSchema);
 
