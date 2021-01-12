@@ -11,6 +11,15 @@ const router = express.Router();
 router.route('/all').get(jobController.getJobs);
 
 router.use(protect);
+
+router
+	.route('/:id')
+	.post(
+		restrictUsers(ROLES.APPLICANT),
+		applicationController.checkOpenApplications,
+		applicationController.createApplication
+	);
+
 router.use(restrictUsers(ROLES.RECRUITER));
 
 router.route('/').post(jobController.createJob);

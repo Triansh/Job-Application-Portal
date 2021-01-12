@@ -20,7 +20,7 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 });
 
 exports.createApplication = handleAsync(async (req, res, next) => {
-	const job = await Job.findById(req.body.job);
+	const job = await Job.findById(req.params.id);
 	if (!job) return next(new AppError('No such job exists', 404));
 
 	if (new Date(job.deadline) <= Date.now())
@@ -29,7 +29,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 		);
 
 	const app = await Application.create({
-		job: req.body.job,
+		job: req.params.id,
 		applicant: req.user._id,
 		sop: req.body.sop,
 		recruiter: job.recruiter,

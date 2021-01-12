@@ -16,11 +16,7 @@ router
 		restrictUsers(ROLES.APPLICANT),
 		applicationController.getMyApplications
 	)
-	.post(
-		restrictUsers(ROLES.APPLICANT),
-		applicationController.checkOpenApplications,
-		applicationController.createApplication
-	);
+
 
 router
 	.route('/employees')
