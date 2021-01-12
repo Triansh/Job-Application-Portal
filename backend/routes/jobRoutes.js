@@ -14,13 +14,11 @@ router.use(restrictUsers(ROLES.RECRUITER));
 
 router.route('/').post(jobController.createJob);
 
+router.route('/active').get(jobController.getMyActiveJobs);
+
 router
 	.route('/:id')
 	.patch(jobController.updateJob)
 	.delete(jobController.deleteJob);
-
-router
-	.route('/active')
-	.get(restrictUsers(ROLES.RECRUITER), jobController.getAllActiveJobs);
 
 module.exports = router;

@@ -50,7 +50,7 @@ exports.updateUser = handleAsync(async (req, res, next) => {
 		data: { user },
 	});
 });
-'The user doesnot exist anymore.', 404;
+
 exports.getAllUsers = handleAsync(async (req, res, next) => {
 	const users = await User.find();
 	res.status(200).json({

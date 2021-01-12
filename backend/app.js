@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 const jobRoutes = require('./routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
@@ -13,7 +12,7 @@ const app = express();
 
 // PARSING JSON
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // ROUTES
 app.use('/api/jobs', jobRoutes);

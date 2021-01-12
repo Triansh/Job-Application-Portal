@@ -4,7 +4,7 @@ const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 
-exports.getAllActiveJobs = handleAsync(async (req, res, next) => {
+exports.getMyActiveJobs = handleAsync(async (req, res, next) => {
 	const filter = { recruiter: req.user._id, status: JOB_STATUS.AVAILABLE };
 	const filteredJobs = new BasicFilter(Job.find(filter), req.query)
 		.filter()
@@ -19,7 +19,7 @@ exports.getAllActiveJobs = handleAsync(async (req, res, next) => {
 
 exports.createJob = handleAsync(async (req, res, next) => {
 	console.log(req.body);
-	const job = await Job.create(req.body);
+	const job = await Job.create({ ...req.body, recruiter: req.user._id });
 	res.status(201).json({
 		status: 'success',
 		data: job,

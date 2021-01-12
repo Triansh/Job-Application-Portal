@@ -12,6 +12,10 @@ const applicationSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'Applicant',
 		},
+		recruiter: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Recruiter',
+		},
 		sop: {
 			type: String,
 		},
@@ -24,10 +28,10 @@ const applicationSchema = new mongoose.Schema(
 );
 
 applicationSchema.pre(/^find/, function (next) {
-	this.populate({
-		path: 'job',
-		select: '-__v',
-	});
+	// this.populate({
+	// 	path: 'job',
+	// 	select: '-__v',
+	// });
 	this.populate({
 		path: 'applicant',
 		select: '-__v',
@@ -35,31 +39,31 @@ applicationSchema.pre(/^find/, function (next) {
 	next();
 });
 
-applicationSchema.post(
-	'findOneAndUpdate',
-	// { document: true, query: false },
-	async function () {
-		const {
-			applicant: { _id },
-		} = await this.model.findById(this.getQuery());
-		const appAC = await this.model.find({
-			applicant: _id,
-			status: APPLICATION_STATUS.ACCEPTED,
-		});
-		if (appAC.length) {
-			await this.model.updateMany(
-				{
-					applicant: _id,
-					status: {
-						$ne: APPLICATION_STATUS.ACCEPTED,
-						$ne: APPLICATION_STATUS.CANCELLED,
-					},
-				},
-				{ status: APPLICATION_STATUS.REJECTED }
-			);
-		}
-	}
-);
+// applicationSchema.post(
+// 	'findOneAndUpdate',
+// 	// { document: true, query: false },
+// 	async function () {
+// 		const {
+// 			applicant: { _id },
+// 		} = await this.model.findById(this.getQuery());
+// 		const appAC = await this.model.find({
+// 			applicant: _id,
+// 			status: APPLICATION_STATUS.ACCEPTED,
+// 		});
+// 		if (appAC.length) {
+// 			await this.model.updateMany(
+// 				{
+// 					applicant: _id,
+// 					status: {
+// 						$ne: APPLICATION_STATUS.ACCEPTED,
+// 						$ne: APPLICATION_STATUS.CANCELLED,
+// 					},
+// 				},
+// 				{ status: APPLICATION_STATUS.REJECTED }
+// 			);
+// 		}
+// 	}
+// );
 
 const applicationModel = mongoose.model('Application', applicationSchema);
 module.exports = applicationModel;
