@@ -12,7 +12,7 @@ const jobStatusHandler = require('../utils/jobStatusHandler');
 
 //This gives all job listing for applicant
 const getAllJobs = handleAsync(async (req, res, next) => {
-	const filteredJob = new BasicFilter(Job.find(), req.query).filter().sort();
+	const filteredJob = new BasicFilter(Job.find(), req.query).filter();
 
 	let job = await filteredJob.query;
 	res.status(201).json({
@@ -21,12 +21,10 @@ const getAllJobs = handleAsync(async (req, res, next) => {
 	});
 });
 
-// This gives all active jobs of a recruiter
+// This gives all active jobs of a recruiter (active => non deleted)
 const getMyActiveJobs = handleAsync(async (req, res, next) => {
-	const filter = { recruiter: req.user._id, status: JOB_STATUS.AVAILABLE };
-	const filteredJobs = new BasicFilter(Job.find(filter), req.query)
-		.filter()
-		.sort();
+	const filter = { recruiter: req.user._id };
+	const filteredJobs = new BasicFilter(Job.find(filter), req.query).filter();
 
 	const jobs = await filteredJobs.query;
 	res.status(200).json({

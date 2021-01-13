@@ -20,7 +20,6 @@ exports.getApplication = handleAsync(async (req, res, next) => {
 exports.getAllApplications = handleAsync(async (req, res, next) => {
 	const filteredApplications = new BasicFilter(Application.find(), req.query)
 		.filter()
-		.sort();
 
 	const apps = await filteredApplications.query;
 	res.status(200).json({

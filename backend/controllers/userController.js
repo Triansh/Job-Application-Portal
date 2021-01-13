@@ -26,10 +26,7 @@ exports.getUser = handleAsync(async (req, res, next) => {
 
 // Any user can update its profile
 exports.updateUser = handleAsync(async (req, res, next) => {
-	const options = {
-		new: true,
-		runValidators: true,
-	};
+	const options = { new: true, runValidators: true };
 
 	let user;
 	if (req.user.role === ROLES.RECRUITER) {
@@ -60,4 +57,3 @@ exports.updateUser = handleAsync(async (req, res, next) => {
 		data: { user },
 	});
 });
-
