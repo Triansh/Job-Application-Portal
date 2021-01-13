@@ -119,14 +119,11 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 		const applicantId = app.applicant._id;
 
 		// CHECK JOBS TOTAL POSITIONS AND UPDATE STATUS
-		const jobDetails = await jobStatusHandler(app.job._id);
+		await jobStatusHandler(app.job._id);
 
 		// UPDATE REST APPLICATIONS OF APPLICANT TO REJECTED
-		const restApps = await Application.updateMany(
-			{
-				_id: { $ne: app._id },
-				applicant: applicantId,
-			},
+		await Application.updateMany(
+			{ _id: { $ne: app._id }, applicant: applicantId },
 			{ status: APPLICATION_STATUS.REJECTED }
 		);
 	}

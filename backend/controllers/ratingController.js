@@ -2,7 +2,7 @@ const Job = require('../models/JobModel');
 const Application = require('../models/ApplicationModel');
 const Applicant = require('../models/ApplicantModel');
 
-const { JOB_STATUS, APPLICATION_STATUS } = require('../utils/constants');
+const {  APPLICATION_STATUS } = require('../utils/constants');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 

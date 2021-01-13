@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { APPLICATION_STATUS } = require('../utils/constants');
 const { checkWords } = require('../utils/validation');
 

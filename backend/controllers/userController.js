@@ -14,18 +14,19 @@ exports.getAllUsers = handleAsync(async (req, res, next) => {
 		data: { users },
 	});
 });
+// --------------------------------------------------------------
 
-exports.getUser = handleAsync(async (req, res, next) => {
+// Get Profile of User
+exports.getProfile = handleAsync(async (req, res, next) => {
 	const user = await User.findById(req.user._id);
 	res.status(201).json({
 		status: 'success',
-		data: { user },
+		data: { data: user },
 	});
 });
-// --------------------------------------------------------------
 
 // Any user can update its profile
-exports.updateUser = handleAsync(async (req, res, next) => {
+exports.updateProfile = handleAsync(async (req, res, next) => {
 	const options = { new: true, runValidators: true };
 
 	let user;

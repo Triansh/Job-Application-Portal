@@ -15,18 +15,15 @@ router
 	.get(
 		restrictUsers(ROLES.APPLICANT),
 		applicationController.getMyApplications
-	)
-
+	);
 
 router
 	.route('/employees')
 	.get(restrictUsers(ROLES.RECRUITER), applicationController.getMyEmployees);
 
-router.route('/my').get();
-
 router
 	.route('/:id')
-	.get(applicationController.getApplication)
+	.get(applicationController.getApplication) // for debugging
 	.patch(
 		restrictUsers(ROLES.RECRUITER),
 		applicationController.updateApplicationStatus

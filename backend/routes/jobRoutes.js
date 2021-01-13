@@ -7,7 +7,6 @@ const { ROLES } = require('../utils/constants');
 
 const router = express.Router();
 
-// FOR DEBUGGING PURPOSES
 
 router.use(protect);
 

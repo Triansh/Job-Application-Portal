@@ -1,7 +1,6 @@
 const Job = require('../models/JobModel');
 const Application = require('../models/ApplicationModel');
 
-const { JOB_STATUS, APPLICATION_STATUS } = require('../utils/constants');
 const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
@@ -30,14 +29,14 @@ const getAllJobs = handleAsync(async (req, res, next) => {
 	});
 });
 
-// This gives all active jobs of a recruiter (active => deadline not passed)
+// This gives all active jobs of a recruiter
 const getMyActiveJobs = handleAsync(async (req, res, next) => {
-	const filter = { recruiter: req.user._id, deadline: { $gt: Date.now() } };
+	const filter = { recruiter: req.user._id };
 	const filteredJobs = new BasicFilter(Job.find(filter), req.query).filter();
 
 	const jobs = await filteredJobs.query
 		.populate('noOfApplicants')
-		.select('title createdAt positions deadline');
+		.select('title createdAt positions');
 
 	res.status(200).json({
 		status: 'success',
