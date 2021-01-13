@@ -5,6 +5,7 @@ const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 const { APPLICATION_STATUS, JOB_STATUS } = require('../utils/constants');
+const jobStatusHandler = require('../utils/jobStatusHandler')
 
 // ---------------------------------------------------------------- DEBUGGING
 exports.getApplication = handleAsync(async (req, res, next) => {

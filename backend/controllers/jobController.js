@@ -5,6 +5,7 @@ const { JOB_STATUS, APPLICATION_STATUS } = require('../utils/constants');
 const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
+const jobStatusHandler = require('../utils/jobStatusHandler');
 
 // ---------------------------------------------------------------- DEBUGGING
 // -------------------------------------------------------------------
@@ -43,39 +44,6 @@ const createJob = handleAsync(async (req, res, next) => {
 		data: { job },
 	});
 });
-
-const jobStatusHandler = async (jobId) => {
-	try {
-		let job = await Job.findById(jobId).populate('apps');
-		const { applications, positions, apps, status } = job;
-
-		const totalAccepted = apps.map(
-			(item) => item.status === APPLICATION_STATUS.ACCEPTED
-		).length;
-		const total = apps.length;
-
-		options = { runValidators: true, new: true };
-
-		if (totalAccepted >= positions || total >= applications) {
-			if (status === JOB_STATUS.AVAILABLE) {
-				job = await Job.findByIdAndUpdate(
-					jobId,
-					{ status: JOB_STATUS.FULL },
-					options
-				);
-			}
-		} else if (status === JOB_STATUS.FULL) {
-			job = await Job.findByIdAndUpdate(
-				jobId,
-				{ status: JOB_STATUS.AVAILABLE },
-				options
-			);
-		}
-		return { status: 'success', data: { job } };
-	} catch (error) {
-		return { status: 'failure', error };
-	}
-};
 
 // This updates a job by recruiter
 const updateJob = handleAsync(async (req, res, next) => {
@@ -121,5 +89,4 @@ module.exports = {
 	updateJob,
 	deleteJob,
 	createJob,
-	jobStatusHandler,
 };

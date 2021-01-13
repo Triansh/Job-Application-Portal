@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { checkInt, isDateInFuture } = require('../utils/validation');
 
-const { JOB_STATUS } = require('../utils/constants');
+const { JOB_STATUS, JOB_TYPES } = require('../utils/constants');
 
 const jobSchema = new mongoose.Schema(
 	{
@@ -56,7 +56,11 @@ const jobSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'A job type must be specified'],
 			enum: {
-				values: ['full-time', 'part-time', 'work-from-home'],
+				values: [
+					JOB_TYPES.FULL_TIME,
+					JOB_TYPES.WORK_FROM_HOME,
+					JOB_TYPES.PART_TIME,
+				],
 				message:
 					'Type of job must be among - Full time, Part time, Work from home',
 			},
@@ -85,6 +89,10 @@ const jobSchema = new mongoose.Schema(
 		status: {
 			type: String,
 			default: JOB_STATUS.AVAILABLE,
+			enum: {
+				values: [JOB_STATUS.AVAILABLE, JOB_STATUS.FULL],
+				message: 'Status must be full or available',
+			},
 		},
 		review: [
 			{
