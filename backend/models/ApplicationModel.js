@@ -38,11 +38,9 @@ const applicationSchema = new mongoose.Schema(
 	{ collection: 'Application' }
 );
 
+applicationSchema.index({ job: 1, applicant: 1 }, { unique: true });
+
 applicationSchema.pre(/^find/, function (next) {
-	// this.populate({
-	// 	path: 'job',
-	// 	select: '-__v',
-	// });
 	this.populate({
 		path: 'applicant',
 		select: '-__v ',

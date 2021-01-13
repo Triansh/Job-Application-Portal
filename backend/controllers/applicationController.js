@@ -56,6 +56,14 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 			new AppError('Deadline for this application has passed', 400)
 		);
 
+	if (
+		await Application.countDocuments({
+			job: req.params.id,
+			applicant: req.user._id,
+		})
+	)
+		return next(new AppError('You have already apllied for this job', 400));
+
 	const app = await Application.create({
 		job: req.params.id,
 		applicant: req.user._id,

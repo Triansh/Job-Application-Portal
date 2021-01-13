@@ -50,6 +50,7 @@ const applicantSchema = new mongoose.Schema({
 	],
 });
 
+
 const applicantModel = userModel.discriminator('Applicant', applicantSchema);
 
 module.exports = applicantModel;
