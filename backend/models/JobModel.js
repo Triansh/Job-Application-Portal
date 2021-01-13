@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { checkInt } = require('../utils/validation');
+const { checkInt, isDateInFuture } = require('../utils/validation');
 
 const { JOB_STATUS } = require('../utils/constants');
 
@@ -41,6 +41,12 @@ const jobSchema = new mongoose.Schema(
 		deadline: {
 			type: Date,
 			required: [true, 'A deadline for application is required'],
+			validate: {
+				validator: function (d) {
+					return isDateInFuture(d);
+				},
+				message: 'The deadline must have a date in future.',
+			},
 		},
 		skills: {
 			type: [String],
@@ -60,10 +66,9 @@ const jobSchema = new mongoose.Schema(
 			required: [true, 'A duration must be specified'],
 			validate: {
 				validator: function (v) {
-					return checkInt(v, 1);
+					return checkInt(v, 0);
 				},
-				message:
-					'The number of months must be an integer greater than zero',
+				message: 'The number of months must be an integer atleast zero',
 			},
 			max: [6, 'The number of months must be an integer less than 7.'],
 		},
@@ -71,9 +76,9 @@ const jobSchema = new mongoose.Schema(
 			type: Number,
 			validate: {
 				validator: function (v) {
-					return checkInt(v, 1);
+					return checkInt(v, 0);
 				},
-				message: 'This must be a integer greater than zero',
+				message: 'This must be a integer atleast zero',
 			},
 			required: [true, 'Please specify the salary per month'],
 		},

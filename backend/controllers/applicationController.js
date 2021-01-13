@@ -112,13 +112,7 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 		const applicantId = app.applicant._id;
 
 		// CHECK JOBS TOTAL POSITIONS AND UPDATE STATUS
-		accepted = Application.countDocuments({
-			job: app.job._id,
-			status: APPLICATION_STATUS.ACCEPTED,
-		});
-		if (accepted >= app.job.positions) {
-			await findByIdAndUpdate(app.job._id, { status: JOB_STATUS.FULL });
-		}
+		const jobDetails = await jobStatusHandler(app.job._id);
 
 		// UPDATE REST APPLICATIONS OF APPLICANT TO REJECTED
 		const restApps = await Application.updateMany(
@@ -143,8 +137,8 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 		recruiter: req.user._id,
 	};
 
-	const employees = await Application.find(filter)
-	
+	const employees = await Application.find(filter);
+
 	res.status(200).json({
 		status: 'success',
 		data: { employees },

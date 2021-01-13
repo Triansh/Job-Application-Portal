@@ -8,7 +8,7 @@ const { ROLES } = require('../utils/constants');
 const router = express.Router();
 
 // FOR DEBUGGING PURPOSES
-router.route('/all').get(jobController.getJobs);
+router.route('/all').get(jobController.getAllJobs);
 
 router.use(protect);
 

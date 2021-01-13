@@ -11,3 +11,5 @@ exports.isYear = (year) => {
 	const curYear = new Date().getFullYear();
 	return Number.isInteger(year) && year >= curYear - 100 && year <= curYear;
 };
+
+exports.isDateInFuture = (date) => new Date(date) > Date.now();
