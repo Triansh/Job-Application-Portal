@@ -8,7 +8,7 @@ const AppError = require('../utils/AppError');
 
 // ---------------------------------------------------------------- DEBUGGING
 exports.getJobs = handleAsync(async (req, res, next) => {
-	const filteredJob = new BasicFilter(Job.find().populate('apps'), req.query)
+	const filteredJob = new BasicFilter(Job.find(), req.query)
 		.filter()
 		.sort();
 

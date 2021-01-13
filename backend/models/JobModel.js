@@ -103,6 +103,15 @@ const jobSchema = new mongoose.Schema(
 	}
 );
 
+jobSchema.virtual('avgRating').get(function () {
+	const { review } = this;
+	if (!review || !review.length) return 0;
+
+	const avgRating =
+		review.reduce((prev, { rating }) => prev + rating, 0) / review.length;
+	return Math.round(avgRating * 10) / 10;
+});
+
 jobSchema.virtual('apps', {
 	ref: 'Application',
 	foreignField: 'job',

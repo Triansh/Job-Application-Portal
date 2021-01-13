@@ -143,7 +143,8 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 		recruiter: req.user._id,
 	};
 
-	const employees = await Application.find(filter).select('applicant');
+	const employees = await Application.find(filter)
+	
 	res.status(200).json({
 		status: 'success',
 		data: { employees },
