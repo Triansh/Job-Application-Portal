@@ -1,6 +1,6 @@
 const jobStatusHandler = async (jobId) => {
 	try {
-		let job = await Job.findById(jobId).populate('apps');
+		let job = await Job.findById(jobId).populate('allApplications');
 		const { applications, positions, apps, status } = job;
 
 		const totalAccepted = apps.map(

@@ -8,9 +8,12 @@ const { ROLES } = require('../utils/constants');
 const router = express.Router();
 
 // FOR DEBUGGING PURPOSES
-router.route('/all').get(jobController.getAllJobs);
 
 router.use(protect);
+
+router
+	.route('/all')
+	.get(restrictUsers(ROLES.APPLICANT), jobController.getAllJobs);
 
 router
 	.route('/:id') // job id
@@ -29,7 +32,7 @@ router
 
 router
 	.route('/:id') // job id
-	.get(applicationController.getActiveApplicationsForJob)
+	.get(applicationController.getNRApplicationsForJob)
 	.patch(jobController.updateJob)
 	.delete(jobController.deleteJob);
 

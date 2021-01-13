@@ -5,7 +5,7 @@ const BasicFilter = require('../utils/BasicFilter');
 const { handleAsync } = require('../utils/errorHandler');
 const AppError = require('../utils/AppError');
 const { APPLICATION_STATUS, JOB_STATUS } = require('../utils/constants');
-const jobStatusHandler = require('../utils/jobStatusHandler')
+const jobStatusHandler = require('../utils/jobStatusHandler');
 
 // ---------------------------------------------------------------- DEBUGGING
 exports.getApplication = handleAsync(async (req, res, next) => {
@@ -18,8 +18,10 @@ exports.getApplication = handleAsync(async (req, res, next) => {
 	});
 });
 exports.getAllApplications = handleAsync(async (req, res, next) => {
-	const filteredApplications = new BasicFilter(Application.find(), req.query)
-		.filter()
+	const filteredApplications = new BasicFilter(
+		Application.find(),
+		req.query
+	).filter();
 
 	const apps = await filteredApplications.query;
 	res.status(200).json({
@@ -77,7 +79,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 });
 
 // This shows all non-rejected applications of a job for recruiter
-exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
+exports.getNRApplicationsForJob = handleAsync(async (req, res, next) => {
 	const job = await Job.findById(req.params.id);
 	if (!job) return next(new AppError('No such job exists', 404));
 
@@ -90,11 +92,16 @@ exports.getActiveApplicationsForJob = handleAsync(async (req, res, next) => {
 		status: { $ne: APPLICATION_STATUS.REJECTED },
 	};
 
-	const apps = await Application.find(filter);
+	const apps = await Application.find(filter)
+		.populate({
+			path: 'applicant',
+			select: '-email -__v',
+		})
+		.select('-job -recruiter -__v');
 
 	res.status(200).json({
 		status: 'success',
-		data: { apps },
+		data: { data: apps },
 	});
 });
 
@@ -137,20 +144,33 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 		recruiter: req.user._id,
 	};
 
-	const employees = await Application.find(filter);
+	const employees = await Application.find(filter)
+		.populate({
+			path: 'applicant',
+			select: 'name review avgRating',
+		})
+		.populate({ path: 'job', select: 'title type' })
+		.select('status createdAt');
 
 	res.status(200).json({
 		status: 'success',
-		data: { employees },
+		data: { data: employees },
 	});
 });
 
 // This gives all type of applications of the applicant
 exports.getMyApplications = handleAsync(async (req, res, next) => {
-	const apps = await Application.find({ applicant: req.user._id });
+	const apps = await Application.find({ applicant: req.user._id })
+		.populate({
+			path: 'recruiter',
+			select: 'name',
+		})
+		.populate({ path: 'job', select: 'title salary' })
+		.select('-sop -__v');
+
 	res.status(200).json({
 		status: 'success',
-		data: { apps },
+		data: { data: apps },
 	});
 });
 

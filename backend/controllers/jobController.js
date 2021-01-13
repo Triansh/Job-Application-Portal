@@ -12,21 +12,33 @@ const jobStatusHandler = require('../utils/jobStatusHandler');
 
 //This gives all job listing for applicant
 const getAllJobs = handleAsync(async (req, res, next) => {
-	const filteredJob = new BasicFilter(Job.find(), req.query).filter();
+	const filter = { deadline: { $gt: Date.now() } };
+	const filteredJob = new BasicFilter(Job.find(filter), req.query).filter();
 
-	let job = await filteredJob.query;
+	const jobs = await filteredJob.query
+		.populate({ path: 'recruiter', select: 'name' })
+		.populate({
+			path: 'allApplications',
+			match: { applicant: req.user._id },
+			select: 'status',
+		})
+		.select('-applications -positions -skills -__v ');
+
 	res.status(201).json({
 		status: 'success',
-		data: { job },
+		data: { data: jobs },
 	});
 });
 
-// This gives all active jobs of a recruiter (active => non deleted)
+// This gives all active jobs of a recruiter (active => deadline not passed)
 const getMyActiveJobs = handleAsync(async (req, res, next) => {
-	const filter = { recruiter: req.user._id };
+	const filter = { recruiter: req.user._id, deadline: { $gt: Date.now() } };
 	const filteredJobs = new BasicFilter(Job.find(filter), req.query).filter();
 
-	const jobs = await filteredJobs.query;
+	const jobs = await filteredJobs.query
+		.populate('noOfApplicants')
+		.select('title createdAt positions deadline');
+
 	res.status(200).json({
 		status: 'success',
 		data: { jobs },

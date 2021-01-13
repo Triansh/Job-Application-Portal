@@ -125,10 +125,17 @@ jobSchema.virtual('avgRating').get(function () {
 	return Math.round(avgRating * 10) / 10;
 });
 
-jobSchema.virtual('apps', {
+jobSchema.virtual('allApplications', {
 	ref: 'Application',
 	foreignField: 'job',
 	localField: '_id',
+});
+
+jobSchema.virtual('noOfApplicants', {
+	ref: 'Application',
+	foreignField: 'job',
+	localField: '_id',
+	count: true,
 });
 
 const jobModel = mongoose.model('Job', jobSchema);
