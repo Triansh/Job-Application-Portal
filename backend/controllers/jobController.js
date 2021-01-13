@@ -62,10 +62,21 @@ const updateJob = handleAsync(async (req, res, next) => {
 	if (job.recruiter.toString() !== req.user._id.toString())
 		return next(new AppError('Permission denied for this action', 403));
 
-	job = await Job.findByIdAndUpdate(req.params.id, req.body, {
-		runValidators: true,
-		new: true,
-	});
+	const { positions, applications, deadline } = req.body;
+
+	if (positions < job.positions || applications < job.applications)
+		return next(
+			new AppError(
+				'You cannot decrease the maximum number of applications and positions',
+				400
+			)
+		);
+
+	job = await Job.findByIdAndUpdate(
+		req.params.id,
+		{ positions, applications, deadline },
+		{ runValidators: true, new: true }
+	);
 
 	if (!job) return next(new AppError('Something went wrong'));
 
