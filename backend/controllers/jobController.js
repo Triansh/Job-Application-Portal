@@ -90,7 +90,7 @@ const deleteJob = handleAsync(async (req, res, next) => {
 	let job = await Job.findById(req.params.id);
 	if (!job)
 		return next(new AppError('No such job exists. Delete failed.', 404));
-	if (job.recruiter !== req.user._id)
+	if (job.recruiter.toString() !== req.user._id.toString())
 		return next(new AppError('Permission denied for this action', 403));
 
 	job = await Job.findByIdAndDelete(req.params.id);

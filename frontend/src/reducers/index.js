@@ -1,3 +1,5 @@
-import { combineReducers} from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-export default combineReducers({});
+export default configureStore({
+	reducer: {},
+});
