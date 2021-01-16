@@ -2,8 +2,8 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Snackbar from './components/common/SnackBar';
-import SignUp from './components/SignUp/SignUp';
-import Login from './components/Login/Login';
+import SignUp from './components/RegisterLogin/SignUp';
+import Login from './components/RegisterLogin/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 
 const App = () => {

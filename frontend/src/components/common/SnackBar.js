@@ -6,9 +6,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import { setStatus } from '../../features/statusSlice';
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,13 +39,15 @@ export default function CustomizedSnackbars() {
     dispatch(setStatus({ status: '', message: '' }));
   };
 
-  return (
+  return status.status ? (
     <div className={classes.root}>
-      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={status.status}>
           {status.message}
         </Alert>
       </Snackbar>
     </div>
+  ) : (
+    <></>
   );
 }

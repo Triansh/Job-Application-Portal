@@ -1,6 +1,4 @@
 import React from 'react';
-import CustomizedSnackbars from '../common/SnackBar';
-
 
 const Dashboard = () => {
   return (
