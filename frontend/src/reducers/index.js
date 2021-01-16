@@ -1,5 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
 
-export default configureStore({
-	reducer: {},
+import roleReducer from '../features/roleSlice';
+import statusReducer from '../features/statusSlice';
+
+export default combineReducers({
+  status: statusReducer,
+  role: roleReducer,
 });
