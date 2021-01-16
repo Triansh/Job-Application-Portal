@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const userModel = require('./UserModel');
 
+const { isYear } = require('../utils/validation');
+
 const applicantSchema = new mongoose.Schema(
 	{
 		education: [
@@ -24,9 +26,10 @@ const applicantSchema = new mongoose.Schema(
 					type: Number,
 					validate: {
 						validator: function (v) {
-							return isYear(v);
+							return v ? isYear(v) && this.startYear <= v : true;
 						},
-						message: 'Must be a valid year',
+						message:
+							'Must be a valid year and should be less than start year',
 					},
 				},
 			},

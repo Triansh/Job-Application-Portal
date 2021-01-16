@@ -8,7 +8,7 @@ const jobSchema = new mongoose.Schema(
 		title: {
 			type: String,
 			trim: true,
-			required: [true, 'A job must have a title'],
+			required: [true, 'A job must have a title.'],
 		},
 		recruiter: {
 			type: mongoose.Schema.ObjectId,
@@ -21,7 +21,7 @@ const jobSchema = new mongoose.Schema(
 					return checkInt(v, 1);
 				},
 				message:
-					'The number of applications must be an integer greater than zero',
+					'The number of applications must be an integer greater than zero.',
 			},
 		},
 		positions: {
@@ -31,7 +31,7 @@ const jobSchema = new mongoose.Schema(
 					return checkInt(v, 1);
 				},
 				message:
-					'The number of positions must be an integer greater than zero',
+					'The number of positions must be an integer greater than zero.',
 			},
 		},
 		createdAt: {
@@ -40,7 +40,7 @@ const jobSchema = new mongoose.Schema(
 		},
 		deadline: {
 			type: Date,
-			required: [true, 'A deadline for application is required'],
+			required: [true, 'A deadline for application is required.'],
 			validate: {
 				validator: function (d) {
 					return isDateInFuture(d);
@@ -54,7 +54,7 @@ const jobSchema = new mongoose.Schema(
 		},
 		type: {
 			type: String,
-			required: [true, 'A job type must be specified'],
+			required: [true, 'A job type must be specified.'],
 			enum: {
 				values: [
 					JOB_TYPES.FULL_TIME,
@@ -62,17 +62,17 @@ const jobSchema = new mongoose.Schema(
 					JOB_TYPES.PART_TIME,
 				],
 				message:
-					'Type of job must be among - Full time, Part time, Work from home',
+					'Type of job must be among - Full time, Part time, Work from home.',
 			},
 		},
 		duration: {
 			type: Number,
-			required: [true, 'A duration must be specified'],
+			required: [true, 'A duration must be specified.'],
 			validate: {
 				validator: function (v) {
 					return checkInt(v, 0);
 				},
-				message: 'The number of months must be an integer atleast zero',
+				message: 'The number of months must be an integer atleast zero.',
 			},
 			max: [6, 'The number of months must be an integer less than 7.'],
 		},
@@ -82,25 +82,25 @@ const jobSchema = new mongoose.Schema(
 				validator: function (v) {
 					return checkInt(v, 0);
 				},
-				message: 'This must be a integer atleast zero',
+				message: 'This must be a integer atleast zero.',
 			},
-			required: [true, 'Please specify the salary per month'],
+			required: [true, 'Please specify the salary per month.'],
 		},
 		status: {
 			type: String,
 			default: JOB_STATUS.AVAILABLE,
 			enum: {
 				values: [JOB_STATUS.AVAILABLE, JOB_STATUS.FULL],
-				message: 'Status must be full or available',
+				message: 'Status must be full or available.',
 			},
 		},
 		review: [
 			{
 				rating: {
 					type: Number,
-					required: [true, 'A review must have a rating'],
-					min: [1, 'Rating must be atleast 1.'],
-					max: [5, 'Rating cam be upto 5'],
+					required: [true, 'A review must have a rating.'],
+					min: [1, 'Rating should atleast be equal to 1.'],
+					max: [5, 'Rating can only be upto 5.'],
 				},
 				rater: {
 					type: mongoose.Schema.ObjectId,

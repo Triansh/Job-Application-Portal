@@ -6,7 +6,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const ratingRoutes = require('./routes/ratingRoutes');
 
-const { handleGlobalError } = require('./utils/errorHandler');
+const { globalErrorHandler } = require('./utils/errorHandler');
 const AppError = require('./utils/AppError');
 
 const app = express();
@@ -26,6 +26,6 @@ app.all('*', (req, res, next) =>
 	next(new AppError(`Unable to find ${req.originalUrl} on the server.`, 404))
 );
 
-app.use(handleGlobalError);
+app.use(globalErrorHandler);
 
 module.exports = app;

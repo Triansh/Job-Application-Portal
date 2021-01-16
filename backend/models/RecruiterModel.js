@@ -7,21 +7,22 @@ const recruiterSchema = new mongoose.Schema(
 	{
 		contact: {
 			type: String,
-			required: [true, 'A contact number is required'],
+			required: [true, 'A contact number is required.'],
 			validate: {
 				validator: function (v) {
 					return isContact(v);
 				},
+				message: 'Contact number must be of 10 digits.',
 			},
 		},
 		bio: {
 			type: String,
-			required: [true, 'A bio is required'],
+			required: [true, 'A bio is required.'],
 			validate: {
 				validator: function (v) {
 					return checkWords(v, 250);
 				},
-				message: 'Bio must be less than 250 words',
+				message: 'Bio must be less than 250 words.',
 			},
 		},
 	},
