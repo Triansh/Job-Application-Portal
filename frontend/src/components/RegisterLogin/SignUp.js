@@ -9,14 +9,11 @@ import { registerUser, setHeaders } from '../../api/userRequests';
 import { setStatus } from '../../features/statusSlice';
 import { setRole } from '../../features/roleSlice';
 
-import { TextInput, TextArea } from '../common/Input';
+import { TextInput } from '../common/Input';
 import Dropmenu from '../common/Dropmenu';
 import useStyles from './styles';
 import Copyright from './Copyright';
-import MultiSelect from '../common/MultiSelect';
-
-import { skills } from '../../utils/skills';
-import EducationList from './EducationList';
+import ExtraFields from './ExtraFields';
 
 export default function SignUp() {
   const classes = useStyles();
@@ -31,25 +28,6 @@ export default function SignUp() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const addExtraAttr = () => {
-    if (user.role === 'Recruiter')
-      return (
-        <>
-          <TextInput id="contact" label="Contact Number" name="contact" value={user.contact} onChange={handleChange} />
-          <TextArea id="bio" rows={3} label="Bio" name="bio" value={user.bio} onChange={handleChange} />
-        </>
-      );
-    else if (user.role === 'Applicant')
-      return (
-        <>
-          <MultiSelect id="skills" label="Skills" name="skills" value={user.skills} onChange={handleChange} options={skills} />
-          <TextInput id="skillText" label="Add more Skills" name="skillText" value={user.skillText} onChange={handleChange} />
-          <EducationList edu={edu} setEdu={setEdu} />
-        </>
-      );
-    else <></>;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +47,7 @@ export default function SignUp() {
       dispatch(setStatus({ status, message: 'Registration successful' }));
     } catch (error) {
       console.error(error.response.data.message);
-      dispatch(setStatus({ status: 'error', message: error.response.data.message}));
+      dispatch(setStatus({ status: 'error', message: error.response.data.message }));
     }
   };
 
@@ -94,7 +72,7 @@ export default function SignUp() {
             <TextInput id="email" label="Email Address" name="email" type="email" autoComplete="email" value={user.email} onChange={handleChange} />
             <TextInput id="password" label="Password" name="password" type="password" autoComplete="current-password" value={user.password} onChange={handleChange} />
             <Dropmenu id="role" label="Role" name="role" value={user.role} onChange={handleChange} options={roleOptions} />
-            {addExtraAttr()}
+            <ExtraFields user={user} edu={edu} setEdu={setEdu} handleChange={handleChange} />
           </Grid>
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={(e) => handleSubmit(e)}>
             Sign Up

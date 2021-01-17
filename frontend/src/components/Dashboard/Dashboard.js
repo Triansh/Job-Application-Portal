@@ -4,6 +4,7 @@ import { getApplicantJobs } from '../../api/jobRequests';
 import { useDispatch } from 'react-redux';
 
 import { saveError } from '../../utils/utils';
+import Navbar from './Navbar';
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -22,9 +23,13 @@ const Dashboard = () => {
       }
     };
     fetchJobs();
-  }, [jobs, dispatch]);
+  }, [dispatch]);
 
-  return <div></div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 };
 
 export default Dashboard;
