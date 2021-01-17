@@ -6,7 +6,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const ratingRoutes = require('./routes/ratingRoutes');
 
-const { globalErrorHandler } = require('./utils/errorHandler');
+const globalErrorHandler = require('./utils/globalerror');
 const AppError = require('./utils/AppError');
 
 const app = express();

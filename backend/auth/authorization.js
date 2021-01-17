@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/UserModel');
-const { handleAsync } = require('../utils/errorHandler');
+const  handleAsync  = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 
 exports.protect = handleAsync(async (req, res, next) => {
@@ -23,6 +23,7 @@ exports.protect = handleAsync(async (req, res, next) => {
 
 	// GRANT ACCESS
 	req.user = currentUser;
+	res.locals.user = currentUser;
 	next();
 });
 

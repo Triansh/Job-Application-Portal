@@ -2,7 +2,7 @@ const User = require('../models/UserModel');
 const Recruiter = require('../models/RecruiterModel');
 const Applicant = require('../models/ApplicantModel');
 
-const { handleAsync } = require('../utils/errorHandler');
+const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const { ROLES } = require('../utils/constants');
 

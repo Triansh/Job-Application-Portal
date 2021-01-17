@@ -2,7 +2,7 @@ const Job = require('../models/JobModel');
 const Application = require('../models/ApplicationModel');
 
 const BasicFilter = require('../utils/BasicFilter');
-const { handleAsync } = require('../utils/errorHandler');
+const  handleAsync  = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const jobStatusHandler = require('../utils/jobStatusHandler');
 

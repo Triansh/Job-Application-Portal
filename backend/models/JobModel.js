@@ -72,7 +72,8 @@ const jobSchema = new mongoose.Schema(
 				validator: function (v) {
 					return checkInt(v, 0);
 				},
-				message: 'The number of months must be an integer atleast zero.',
+				message:
+					'The number of months must be an integer atleast zero.',
 			},
 			max: [6, 'The number of months must be an integer less than 7.'],
 		},

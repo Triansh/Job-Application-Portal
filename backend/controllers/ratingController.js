@@ -3,7 +3,7 @@ const Application = require('../models/ApplicationModel');
 const Applicant = require('../models/ApplicantModel');
 
 const {  APPLICATION_STATUS } = require('../utils/constants');
-const { handleAsync } = require('../utils/errorHandler');
+const handleAsync  = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 
 exports.rateJob = handleAsync(async (req, res, next) => {

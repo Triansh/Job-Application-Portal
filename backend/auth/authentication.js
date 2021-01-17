@@ -5,7 +5,7 @@ const User = require('../models/UserModel');
 const Recruiter = require('../models/RecruiterModel');
 const Applicant = require('../models/ApplicantModel');
 const AppError = require('../utils/AppError');
-const { handleAsync } = require('../utils/errorHandler');
+const handleAsync = require('../utils/handleAsync');
 const { ROLES } = require('../utils/constants');
 
 const createSignToken = (id) => {
@@ -21,7 +21,7 @@ const sendToken = (user, statusCode, res) => {
 	res.status(statusCode).json({
 		status: 'success',
 		token,
-		 user ,
+		user,
 	});
 };
 
