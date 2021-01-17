@@ -1,26 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Link, NavLink } from 'react-router-dom';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import { CssBaseline, IconButton, Drawer, AppBar, Toolbar, List, Typography, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import ReceiptOutlinedIcon from '@material-ui/icons/ReceiptOutlined';
-import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
+
+import NavList from './NavList';
 
 const drawerWidth = 240;
 
@@ -90,17 +77,6 @@ const Navbar = ({ children }) => {
 
   const handleDrawerClose = () => setOpen(false);
 
-  const NavItem = ({ path, Icon, label, active }) => {
-    return (
-      <ListItem button to={path} component={active ? NavLink : Link}>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-        <ListItemText primary={label} />
-      </ListItem>
-    );
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -120,9 +96,7 @@ const Navbar = ({ children }) => {
         </div>
         <Divider />
         <List>
-          <NavItem path="/profile" Icon={PermIdentityIcon} label="My Profile" />
-          <NavItem path="/" Icon={WorkOutlineOutlinedIcon} label="Job Listings" />
-          <NavItem path="/applications" Icon={ReceiptOutlinedIcon} label="My Applications" />
+          <NavList />
         </List>
         <Divider />
       </Drawer>

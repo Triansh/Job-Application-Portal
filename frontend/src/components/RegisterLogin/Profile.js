@@ -10,7 +10,7 @@ import { getUserData, updateUser } from '../../api/userRequests';
 import { setStatus } from '../../features/statusSlice';
 
 import TextInput from '../common/Input';
-import Navbar from '../Dashboard/Navbar';
+import Navbar from '../Navbar/Navbar';
 import ExtraFields from './ExtraFields';
 import useStyles from './styles';
 

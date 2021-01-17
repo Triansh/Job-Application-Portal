@@ -46,8 +46,8 @@ export default function SignUp() {
       dispatch(setRole({ role: data.user.role }));
       dispatch(setStatus({ status, message: 'Registration successful' }));
     } catch (error) {
-      console.error(error.response.data.message);
-      dispatch(setStatus({ status: 'error', message: error.response.data.message }));
+      const { message } = error.response.data;
+      dispatch(setStatus({ status: 'error', message }));
     }
   };
 

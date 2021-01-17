@@ -7,6 +7,8 @@ import Login from './components/RegisterLogin/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/RegisterLogin/Profile';
 
+import JobForm from './components/Jobs/JobForm'
+
 const App = () => {
   return (
     <>
@@ -15,6 +17,7 @@ const App = () => {
         <Route path="/login" exact component={Login} />
         <Route path="/" exact component={Dashboard} />
         <Route path="/profile" exact component={Profile} />
+        <Route path="/add" exact component={JobForm} />
       </Switch>
       <Snackbar />
     </>

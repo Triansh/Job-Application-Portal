@@ -4,7 +4,7 @@ import { getApplicantJobs } from '../../api/jobRequests';
 import { useDispatch } from 'react-redux';
 
 import { saveError } from '../../utils/utils';
-import Navbar from './Navbar';
+import Navbar from '../Navbar/Navbar';
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
