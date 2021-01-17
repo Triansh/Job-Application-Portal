@@ -10,3 +10,7 @@ export const setHeaders = (token) => {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   console.log(axios.defaults.headers);
 };
+
+export const getUserData = () => axios.get(url);
+
+export const updateUser = (user) => axios.patch(url, user);

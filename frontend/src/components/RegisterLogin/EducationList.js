@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Grid, CardContent, CardActionArea, IconButton, CardHeader } from '@material-ui/core';
+import { Card, Grid, CardContent, IconButton, CardHeader } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -21,15 +21,13 @@ const EducationList = ({ edu, setEdu }) => {
           }
           subheader="Education"
         />
-        <CardActionArea>
-          <CardContent>
-            <Grid container spacing={2}>
-              {edu.map((item, index) => (
-                <EducationItem key={index} edu={edu} setEdu={setEdu} index={index} />
-              ))}
-            </Grid>
-          </CardContent>
-        </CardActionArea>
+        <CardContent>
+          <Grid container spacing={2}>
+            {edu.map((item, index) => (
+              <EducationItem key={index} edu={edu} setEdu={setEdu} index={index} />
+            ))}
+          </Grid>
+        </CardContent>
       </Card>
     </Grid>
   );

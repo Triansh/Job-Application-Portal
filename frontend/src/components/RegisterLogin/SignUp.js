@@ -64,9 +64,9 @@ export default function SignUp() {
       const { data } = await registerUser({ ...user, skills: allSkills, education: edu });
       const { token, status } = data;
       if (status === 'success') setHeaders(token);
+      history.push('/');
       dispatch(setRole({ role: data.user.role }));
       dispatch(setStatus({ status, message: 'Registration successful' }));
-      history.push('/');
     } catch (error) {
       console.error(error.response.data.message);
       dispatch(setStatus({ status: 'error', message: error.response.data.message}));
