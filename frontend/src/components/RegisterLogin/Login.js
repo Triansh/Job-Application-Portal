@@ -9,10 +9,9 @@ import { setStatus } from '../../features/statusSlice';
 import { setRole } from '../../features/roleSlice';
 import { loginUser, setHeaders } from '../../api/userRequests';
 
-import Input from '../common/Input';
+import Input from '../Controls/Input';
 import useStyles from './styles';
 import Copyright from './Copyright';
-import { saveError } from '../../utils/utils';
 
 export default function SignIn() {
   const classes = useStyles();
@@ -33,13 +32,13 @@ export default function SignIn() {
     try {
       const { data } = await loginUser(user);
       const { token, status } = data;
-      if (status === 'success')
-       setHeaders(token);
+      if (status === 'success') setHeaders(token);
       history.push('/');
       dispatch(setRole({ role: data.user.role }));
       dispatch(setStatus({ status, message: 'Login successful' }));
     } catch (error) {
-      saveError(error, dispatch);
+      const { message } = error.response.data;
+      dispatch(setStatus({ status: 'error', message }));
     }
   };
 

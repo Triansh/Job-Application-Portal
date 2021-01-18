@@ -1,8 +1,8 @@
 import React from 'react';
 import { skills } from '../../utils/skills';
 
-import { TextInput, TextArea } from '../common/Input';
-import MultiSelect from '../common/MultiSelect';
+import { TextInput, TextArea } from '../Controls/Input';
+import MultiSelect from '../Controls/MultiSelect';
 import EducationList from './EducationList';
 
 const ExtraFields = ({ user, handleChange, edu, setEdu, userSkills }) => {

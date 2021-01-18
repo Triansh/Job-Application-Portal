@@ -3,8 +3,8 @@ import React from 'react';
 import { Paper, makeStyles, Toolbar } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import Button from '../common/Button';
-import SearchBox from '../common/SearchBox';
+import Button from '../Controls/Button';
+import SearchBox from '../Controls/SearchBox';
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {

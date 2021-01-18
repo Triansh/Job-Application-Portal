@@ -9,8 +9,8 @@ import { registerUser, setHeaders } from '../../api/userRequests';
 import { setStatus } from '../../features/statusSlice';
 import { setRole } from '../../features/roleSlice';
 
-import { TextInput } from '../common/Input';
-import Dropmenu from '../common/Dropmenu';
+import { TextInput } from '../Controls/Input';
+import Dropmenu from '../Controls/Dropmenu';
 import useStyles from './styles';
 import Copyright from './Copyright';
 import ExtraFields from './ExtraFields';

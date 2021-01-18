@@ -3,16 +3,16 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { Grid, makeStyles } from '@material-ui/core';
-import { createJob } from '../../api/jobRequests';
+import { createJob } from '../../../api/jobRequests';
 
-import { setStatus } from '../../features/statusSlice';
-import { skills } from '../../utils/skills';
+import { setStatus } from '../../../features/statusSlice';
+import { skills } from '../../../utils/skills';
 
-import Button from '../common/Button';
-import Dropmenu from '../common/Dropmenu';
-import { DateTimeInput, PlainInput } from '../common/Input';
-import MultiSelect from '../common/MultiSelect';
-import RadioButtons from '../common/RadioButtons';
+import Button from '../../Controls/Button';
+import Dropmenu from '../../Controls/Dropmenu';
+import { DateTimeInput, PlainInput } from '../../Controls/Input';
+import MultiSelect from '../../Controls/MultiSelect';
+import RadioButtons from '../../Controls/RadioButtons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewJobForm = ({ ...rest }) => {
+const NewJobForm = ({ setOpenPopup, fetchAgain, setFetchAgain, ...rest }) => {
   const classes = useStyles();
 
   const [job, setJob] = useState({ title: '', applications: '', positions: '', deadline: '', skills: [], skillText: '', type: 'full-time', duration: 6, salary: '' });
@@ -47,6 +47,8 @@ const NewJobForm = ({ ...rest }) => {
 
     try {
       await createJob({ ...job, skills: allSkills });
+      setOpenPopup(false);
+      setFetchAgain(!fetchAgain)
       history.push('/');
       dispatch(setStatus({ status: 'success', message: 'Job created successfully' }));
     } catch (error) {

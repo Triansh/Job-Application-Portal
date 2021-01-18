@@ -9,7 +9,7 @@ import avatarImg from '../../assets/avatar.svg';
 import { getUserData, updateUser } from '../../api/userRequests';
 import { setStatus } from '../../features/statusSlice';
 
-import TextInput from '../common/Input';
+import TextInput from '../Controls/Input';
 import Navbar from '../Navbar/Navbar';
 import ExtraFields from './ExtraFields';
 import useStyles from './styles';
