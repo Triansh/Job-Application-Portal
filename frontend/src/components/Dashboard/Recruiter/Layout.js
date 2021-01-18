@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
+import { TableBody, TableRow, TableCell, Typography } from '@material-ui/core';
 
 import { getRecruiterJobs } from '../../../api/jobRequests';
 
@@ -11,11 +11,13 @@ import PageHeader from '../../Table/PageHeader';
 import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
-import NewJobForm from './NewJobForm';
+import NewJobForm from './CreateJobForm';
 import ActionIcons from './ActionIcons';
 
 import Popup from '../../Controls/Popup';
 import { sort } from '../utils';
+import DialogBox from '../../Controls/DialogBox';
+import UpdateJobForm from './UpdateJobForm';
 
 const Layout = () => {
   const heads = [
@@ -32,19 +34,11 @@ const Layout = () => {
   const [sortBy, setSortBy] = useState({ term: '', order: '' });
   const [createPopup, setCreatePopup] = useState(false);
   const [updatePopup, setUpdatePopup] = useState(false);
-  const [deletePopup, setDeletePopup] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
 
   const [fetchAgain, setFetchAgain] = useState(false);
 
   const dispatch = useDispatch();
-
-  const handleDelete = (id) => {
-    setDeletePopup(true);
-  };
-
-  const handleUpdate = (id) => {
-    setUpdatePopup(true);
-  };
 
   const fetchJobs = async () => {
     let {
@@ -84,10 +78,10 @@ const Layout = () => {
               <TableRow key={item._id}>
                 <TableCell align="center">{item.title}</TableCell>
                 <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
-                <TableCell align="center">{item.noOfApplications}</TableCell>
+                <TableCell align="center">{item.noOfApplicants}</TableCell>
                 <TableCell align="center">{item.positions}</TableCell>
                 <TableCell>
-                  <ActionIcons id={item._id} handleDelete={handleDelete} handleUpdate={handleUpdate} />
+                  <ActionIcons id={item._id} confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
                 </TableCell>
               </TableRow>
             ))}
@@ -97,12 +91,12 @@ const Layout = () => {
       <Popup title="Job Form" openPopup={createPopup} setOpenPopup={setCreatePopup}>
         <NewJobForm fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setCreatePopup} />
       </Popup>
-      <Popup title="Update Job" openPopup={updatePopup} setOpenPopup={setUpdatePopup}>
-        {/* <NewJobForm fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setCreatePopup} /> */}
-      </Popup>
-      <Popup title="Delete Job" openPopup={deletePopup} setOpenPopup={setDeletePopup}>
-        {/* <NewJobForm fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setCreatePopup} /> */}
-      </Popup>
+      {/* <DialogBox action="update"  title="Update Job" openPopup={updatePopup} setOpenPopup={setUpdatePopup}>
+        <UpdateJobForm fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setCreatePopup} />
+      </DialogBox> */}
+      <DialogBox action="delete" fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} title="Delete Job" confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog}>
+        <Typography variant="body1" >Are you sure, you want to delete this job?</Typography>
+      </DialogBox>
     </Navbar>
   );
 };

@@ -12,12 +12,8 @@ export const TextInput = ({ sm, type, id, label, name, autoComplete, value, onCh
   );
 };
 
-export const TextArea = ({ rows, id, label, name, autoComplete, value, onChange }) => {
-  return (
-    <Grid item xs={12}>
-      <TextField multiline rows={rows} variant="outlined" fullWidth id={id} label={label} name={name} autoComplete={autoComplete} value={value} onChange={(e) => onChange(e)} />
-    </Grid>
-  );
+export const TextArea = ({ rows, label, name, value, onChange, ...rest }) => {
+  return <TextField multiline rows={rows} variant="outlined" fullWidth label={label} name={name} value={value} onChange={(e) => onChange(e)} {...rest} />;
 };
 
 export const DateTimeInput = ({ sm, label, id, name, value, onChange }) => {
