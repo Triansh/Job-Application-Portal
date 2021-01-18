@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, Input, InputLabel, MenuItem, FormControl, Select, Chip } from '@material-ui/core';
+import { Input, InputLabel, MenuItem, FormControl, Select, Chip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1),
-      border: theme.spacing(10)
-    },
+  formControl: {
+    margin: theme.spacing(1),
+    border: theme.spacing(10),
+  },
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -36,39 +36,38 @@ const getStyles = (skill, skillName, theme) => {
   };
 };
 
-const MultiSelect = ({ onChange, value, name, id, options, label }) => {
+const MultiSelect = ({ onChange, value, name,  options, label }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   return (
-      <Grid item xs={12}>
-        <FormControl fullWidth variant="outlined" className={classes.formControl}>
-          <InputLabel variant="outlined" id="demo-mutiple-chip-label">{label}</InputLabel>
-          <Select
-            labelId={label}
-            id={id}
-            multiple
-            name={name}
-            value={value}
-            onChange={(e) => onChange(e)}
-            input={<Input id="select-multiple-chip" />}
-            renderValue={(selected) => (
-              <div className={classes.chips}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {options.map((skill) => (
-              <MenuItem key={skill} value={skill} style={getStyles(skill, value, theme)}>
-                {skill}
-              </MenuItem>
+    <FormControl fullWidth variant="outlined" className={classes.formControl}>
+      <InputLabel variant="outlined" id="demo-mutiple-chip-label">
+        {label}
+      </InputLabel>
+      <Select
+        labelId={label}
+        multiple
+        name={name}
+        value={value}
+        onChange={(e) => onChange(e)}
+        input={<Input id="select-multiple-chip" />}
+        renderValue={(selected) => (
+          <div className={classes.chips}>
+            {selected.map((value) => (
+              <Chip key={value} label={value} className={classes.chip} />
             ))}
-          </Select>
-        </FormControl>
-      </Grid>
+          </div>
+        )}
+        MenuProps={MenuProps}
+      >
+        {options.map((skill) => (
+          <MenuItem key={skill} value={skill} style={getStyles(skill, value, theme)}>
+            {skill}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

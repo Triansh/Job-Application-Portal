@@ -7,7 +7,6 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import ReceiptOutlinedIcon from '@material-ui/icons/ReceiptOutlined';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import GroupAddOutlinedIcon from '@material-ui/icons/GroupAddOutlined';
-import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
 
 const NavItem = ({ path, Icon, label }) => {
   return (
@@ -35,7 +34,6 @@ const NavList = () => {
     return (
       <>
         <NavItem path="/profile" Icon={PermIdentityIcon} label="My Profile" />
-        <NavItem path="/add" Icon={NoteAddOutlinedIcon} label="Create a Job" />
         <NavItem path="/" Icon={WorkOutlineOutlinedIcon} label="My Active Jobs" />
         <NavItem path="/applications" Icon={GroupAddOutlinedIcon} label="My Employees" />
       </>

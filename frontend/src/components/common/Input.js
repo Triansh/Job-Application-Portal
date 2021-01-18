@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@material-ui/core';
+
+import SearchIcon from '@material-ui/icons/Search';
 
 export const TextInput = ({ sm, type, id, label, name, autoComplete, value, onChange }) => {
   return (
@@ -25,6 +26,29 @@ export const DateTimeInput = ({ sm, label, id, name, value, onChange }) => {
       <TextField variant="outlined" fullWidth id={id} label={label} name={name} type="datetime-local" value={value} InputLabelProps={{ shrink: true }} onChange={(e) => onChange(e)} />
     </Grid>
   );
+};
+
+export const TextInputWithIcon = ({ id, label, value, onChange }) => {
+  return (
+    <FormControl variant="outlined" fullWidth>
+      <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
+      <OutlinedInput
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e)}
+        endAdornment={
+          <InputAdornment position="end">
+            <SearchIcon />
+          </InputAdornment>
+        }
+        labelWidth={92}
+      />
+    </FormControl>
+  );
+};
+
+export const PlainInput = ({ name, label, value, onChange, ...rest }) => {
+  return <TextField variant="outlined" label={label} name={name} value={value} onChange={onChange} {...rest} />;
 };
 
 export default TextInput;

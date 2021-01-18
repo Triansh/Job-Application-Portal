@@ -1,21 +1,18 @@
 import React from 'react';
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
-import { Select, InputLabel, FormControl, Grid } from '@material-ui/core';
-
-const Dropmenu = ({ sm, onChange, value, name, id, options, label }) => {
+const Dropmenu = ({ onChange, value, name, options, label }) => {
   return (
-    <Grid item xs={12} sm={sm || 12}>
-      <FormControl fullWidth variant="outlined">
-        <InputLabel htmlFor="outlined-age-native-simple">{label}</InputLabel>
-        <Select native required value={value} onChange={(e) => onChange(e)} label={label} inputProps={{ name, id }}>
-          {options.map(({ label, value }, index) => (
-            <option key={index} value={value}>
-              {label}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-    </Grid>
+    <FormControl fullWidth variant="outlined">
+      <InputLabel htmlFor="outlined-age-native-simple">{label}</InputLabel>
+      <Select label={label} name={name} value={value} onChange={onChange}>
+        {options.map(({ label, value }, id) => (
+          <MenuItem key={id} value={value}>
+            {label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 
