@@ -20,8 +20,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageHeader = ({ handleSearch, setOpenPopup, children, value, btnDisable, ...rest }) => {
+const PageHeader = ({ setSearchTerm, setOpenPopup, children, value, btnDisable, ...rest }) => {
   const classes = useStyles();
+
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+  };
+
   return (
     <>
       <Paper className={classes.pageContent}>

@@ -56,14 +56,11 @@ const Layout = () => {
     fetchJobs();
   }, [dispatch]);
 
-  const handleSearch = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-  };
+
 
   return (
     <Navbar>
-      <PageHeader btnDisable setOpenPopup={setOpenPopup} handleSearch={handleSearch} value={searchTerm}>
+      <PageHeader btnDisable setOpenPopup={setOpenPopup} setSearchTerm={setSearchTerm} value={searchTerm}>
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>
@@ -75,7 +72,7 @@ const Layout = () => {
                 <TableCell align="center">{item.duration}</TableCell>
                 <TableCell align="center">{new Date(item.deadline).toDateString()}</TableCell>
                 <TableCell align="center">{item.avgRating}</TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <ActionIcons item={item} />
                 </TableCell>
               </TableRow>

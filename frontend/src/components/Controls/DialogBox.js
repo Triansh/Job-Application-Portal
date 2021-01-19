@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-const DialogBox = ({ setConfirmDialog, confirmDialog, title, text, action, children }) => {
+const DialogBox = ({ setConfirmDialog, confirmDialog, title,  action, children }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
