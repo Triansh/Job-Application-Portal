@@ -2,10 +2,10 @@ import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { createApplication, updateJob } from '../../../api/jobRequests';
+import { createApplication} from '../../../api/jobRequests';
 import { setStatus } from '../../../features/statusSlice';
 import Button from '../../Controls/Button';
-import { DateTimeInput, PlainInput, TextArea } from '../../Controls/Input';
+import {  TextArea } from '../../Controls/Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
