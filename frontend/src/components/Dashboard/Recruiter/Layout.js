@@ -78,7 +78,7 @@ const Layout = () => {
     newJobs = sort(newJobs, sortBy.term, sortBy.order);
     newJobs = newJobs.filter((item) => item.title.split(' ').join('').toLowerCase().includes(term));
     setSearchJobs(newJobs);
-  }, [searchTerm, sortBy, jobs, setCreatePopup]);
+  }, [searchTerm, sortBy, jobs]);
 
   useEffect(() => {
     console.log('hi');

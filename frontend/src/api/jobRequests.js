@@ -13,3 +13,5 @@ export const getApplicantJobs = () => axios.get(`${url}/all`);
 export const getRecruiterJobs = () => axios.get(url);
 
 export const getJobApplications = (jobId) => axios.get(`${url}/${jobId}`);
+
+export const createApplication = (app, jobId) => axios.post(`${url}/${jobId}`, app);

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const url = 'http://localhost:5000/api/applications';
 
-export const createApplication = (app) => axios.post(url, app);
 
 export const updateApplicationStatus = (app, appId) => axios.patch(`${url}/${appId}`, app);
 
