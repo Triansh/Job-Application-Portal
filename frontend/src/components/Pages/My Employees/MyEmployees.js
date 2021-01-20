@@ -70,6 +70,7 @@ const MyEmployees = () => {
   const ActionIcons = ({ item }) => {
     const userId = item.recruiter;
     const { review } = item.applicant;
+    console.log(userId, review, item.applicant._id)
     const ratingExists = review.filter(({ rater }) => rater === userId);
     const hasRated = !ratingExists || !ratingExists.length ? false : true;
 

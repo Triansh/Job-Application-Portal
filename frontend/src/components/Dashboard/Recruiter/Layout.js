@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router';
 
 import { TableBody, TableRow, TableCell, Typography, IconButton } from '@material-ui/core';
@@ -95,7 +96,7 @@ const Layout = () => {
               const { _id, title, createdAt, noOfApplicants, positions } = item;
               return (
                 <TableRow key={_id}>
-                  <TableCell align="center">{title}</TableCell>
+                  <TableCell align="center"  to={`/jobs/${_id}`} component={Link}>{title}</TableCell>
                   <TableCell align="center">{new Date(createdAt).toDateString()}</TableCell>
                   <TableCell align="center">{noOfApplicants}</TableCell>
                   <TableCell align="center">{positions}</TableCell>

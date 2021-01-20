@@ -25,7 +25,7 @@ import { rateJob } from '../../../api/ratingRequests';
 
 const MyApplications = () => {
   const heads = [
-    { label: 'Title', id: 'job.title' },
+    { label: 'Job Title', id: 'job.title' },
     { label: 'Recruiter Name', id: 'recruiter.name', nested: true },
     { label: 'Salary', id: 'job.salary' },
     { label: 'Date of posting', id: 'createdAt' },

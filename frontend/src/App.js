@@ -8,6 +8,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/RegisterLogin/Profile';
 import MyApplications from './components/Pages/My Applications/MyApplications';
 import MyEmployees from './components/Pages/My Employees/MyEmployees';
+import JobApplications from './components/Pages/JobApplications/JobApplications';
+
 
 const App = () => {
   return (
@@ -19,6 +21,7 @@ const App = () => {
         <Route path="/profile" exact component={Profile} />
         <Route path="/applications" exact component={MyApplications} />
         <Route path="/employees" exact component={MyEmployees} />
+        <Route path="/jobs/:id" exact component={JobApplications} />
       </Switch>
       <Snackbar />
     </>
