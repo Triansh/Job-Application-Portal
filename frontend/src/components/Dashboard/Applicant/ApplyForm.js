@@ -27,7 +27,6 @@ const ApplyForm = ({ jobToApply, fetchAgain, setFetchAgain, setOpenPopup }) => {
   };
 
   useEffect(() => {
-    console.log(jobToApply);
     setSop({ ...sop, id: jobToApply._id });
   }, [jobToApply]);
 

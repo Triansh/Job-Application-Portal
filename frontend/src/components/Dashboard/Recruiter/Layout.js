@@ -17,7 +17,7 @@ import Table from '../../Table/Table';
 
 import DialogBox from '../../Controls/DialogBox';
 import Popup from '../../Controls/Popup';
-import { sort } from '../utils';
+import { sort } from '../../../utils/utils';
 
 import NewJobForm from './CreateJobForm';
 import UpdateJobForm from './UpdateJobForm';

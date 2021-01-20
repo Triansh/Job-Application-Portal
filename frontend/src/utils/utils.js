@@ -1,6 +1,8 @@
-import { setStatus } from '../features/statusSlice';
+import _ from 'lodash';
 
-export const saveError = (error, dispatch) => {
-  console.error(error.response.data.message);
-  dispatch(setStatus({ status: 'error', message: error.response.data.message }));
+export const sort = (items, term, order) => {
+//   console.log(items);
+//   console.log(term)
+//   console.log(order)
+  return _.orderBy(items, term, order);
 };

@@ -35,7 +35,7 @@ const NavList = () => {
       <>
         <NavItem path="/profile" Icon={PermIdentityIcon} label="My Profile" />
         <NavItem path="/" Icon={WorkOutlineOutlinedIcon} label="My Active Jobs" />
-        <NavItem path="/applications" Icon={GroupAddOutlinedIcon} label="My Employees" />
+        <NavItem path="/employees" Icon={GroupAddOutlinedIcon} label="My Employees" />
       </>
     );
   return <></>;
