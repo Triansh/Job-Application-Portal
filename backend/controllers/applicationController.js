@@ -2,7 +2,7 @@ const Application = require('../models/ApplicationModel');
 const Job = require('../models/JobModel');
 
 const BasicFilter = require('../utils/BasicFilter');
-const handleAsync  = require('../utils/handleAsync');
+const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const { APPLICATION_STATUS, JOB_STATUS } = require('../utils/constants');
 const jobStatusHandler = require('../utils/jobStatusHandler');
@@ -44,8 +44,11 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 			)
 		);
 
-	const jobApps = await Application.countDocuments({ job: req.params.id });
-	if (jobApps >= job.positions)
+	const totalPositionsAlloted = await Application.countDocuments({
+		job: req.params.id,
+		status: APPLICATION_STATUS.ACCEPTED,
+	});
+	if (totalPositionsAlloted >= job.positions)
 		return next(
 			new AppError(
 				'Maximum limit of Applications reached.\nUnsuccessful Attempt.',
@@ -147,7 +150,7 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 			select: 'name review avgRating',
 		})
 		.populate({ path: 'job', select: 'title type' })
-		.select('status createdAt');
+		.select('status createdAt recruiter');
 
 	res.status(200).json({
 		status: 'success',
@@ -162,7 +165,7 @@ exports.getMyApplications = handleAsync(async (req, res, next) => {
 			path: 'recruiter',
 			select: 'name',
 		})
-		.populate({ path: 'job', select: 'title salary' })
+		.populate({ path: 'job', select: 'title salary review' })
 		.select('-sop -__v');
 
 	res.status(200).json({

@@ -52,7 +52,7 @@ exports.rateEmployee = handleAsync(async (req, res, next) => {
 	if (!app || app.length === 0)
 		return next(new AppError('No such Employee found', 404));
 
-	const { review } = await Applicant.find(req.params.id);
+	const { review } = await Applicant.findById(req.params.id);
 	const exists = review.map((rev) => rev.rater === req.user._id).length;
 
 	if (exists)

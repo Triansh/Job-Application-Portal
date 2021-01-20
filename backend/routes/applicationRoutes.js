@@ -17,16 +17,13 @@ router
 		applicationController.getMyApplications
 	);
 
-router
-	.route('/employees')
-	.get(restrictUsers(ROLES.RECRUITER), applicationController.getMyEmployees);
+router.use(restrictUsers(ROLES.RECRUITER));
+
+router.route('/employees').get(applicationController.getMyEmployees);
 
 router
 	.route('/:id')
 	.get(applicationController.getApplication) // for debugging
-	.patch(
-		restrictUsers(ROLES.RECRUITER),
-		applicationController.updateApplicationStatus
-	);
+	.patch(applicationController.updateApplicationStatus);
 
 module.exports = router;

@@ -18,7 +18,7 @@ exports.getAllUsers = handleAsync(async (req, res, next) => {
 
 // Get Profile of User
 exports.getProfile = handleAsync(async (req, res, next) => {
-	const user = await User.findById(req.user._id);
+	const user = await User.findById(req.user._id).select('-email -__v');
 	res.status(201).json({
 		status: 'success',
 		data: { data: user },
@@ -39,7 +39,7 @@ exports.updateProfile = handleAsync(async (req, res, next) => {
 				bio: req.body.bio,
 			},
 			options
-		);
+		).select('-email -__v');
 	} else if (req.user.role === ROLES.APPLICANT) {
 		user = await Applicant.findByIdAndUpdate(
 			req.user._id,
@@ -49,7 +49,7 @@ exports.updateProfile = handleAsync(async (req, res, next) => {
 				education: req.body.education,
 			},
 			options
-		);
+		).select('-email -__v');
 	}
 	if (!user)
 		return next(new AppError('The user doesnot exist anymore.', 404));

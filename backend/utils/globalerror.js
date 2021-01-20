@@ -6,6 +6,7 @@ module.exports = (err, req, res, next) => {
 };
 
 const sendError = (err, res) => {
+	console.log(err.stack)
 	res.status(err.statusCode).json({
 		status: err.status,
 		message: err.message,

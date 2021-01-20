@@ -2,7 +2,7 @@ const Job = require('../models/JobModel');
 const Application = require('../models/ApplicationModel');
 
 const BasicFilter = require('../utils/BasicFilter');
-const  handleAsync  = require('../utils/handleAsync');
+const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const jobStatusHandler = require('../utils/jobStatusHandler');
 
@@ -23,6 +23,7 @@ const getAllJobs = handleAsync(async (req, res, next) => {
 		})
 		.select('-applications -positions -skills -__v ');
 
+
 	res.status(201).json({
 		status: 'success',
 		data: { data: jobs },
@@ -36,11 +37,11 @@ const getMyActiveJobs = handleAsync(async (req, res, next) => {
 
 	const jobs = await filteredJobs.query
 		.populate('noOfApplicants')
-		.select('title createdAt positions');
+		.select('title createdAt positions applications deadline');
 
 	res.status(200).json({
 		status: 'success',
-		data: { jobs },
+		data: { data: jobs },
 	});
 });
 
@@ -93,10 +94,10 @@ const deleteJob = handleAsync(async (req, res, next) => {
 	if (job.recruiter.toString() !== req.user._id.toString())
 		return next(new AppError('Permission denied for this action', 403));
 
-	job = await Job.findByIdAndDelete(req.params.id);
-
 	// CASCADE DELETION
 	await Application.deleteMany({ job: req.params.id });
+
+	job = await Job.findByIdAndDelete(req.params.id);
 
 	res.status(204).json({
 		status: 'success',

@@ -30,6 +30,7 @@ exports.protect = handleAsync(async (req, res, next) => {
 exports.restrictUsers = (role) => {
 	return (req, res, next) => {
 		if (req.user.role !== role) {
+			console.log(req.user.role, role)
 			return next(new AppError('Permission denied', 403));
 		}
 		next();
