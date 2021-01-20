@@ -2,8 +2,8 @@ const Job = require('../models/JobModel');
 const Application = require('../models/ApplicationModel');
 const Applicant = require('../models/ApplicantModel');
 
-const {  APPLICATION_STATUS } = require('../utils/constants');
-const handleAsync  = require('../utils/handleAsync');
+const { APPLICATION_STATUS } = require('../utils/constants');
+const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 
 exports.rateJob = handleAsync(async (req, res, next) => {
@@ -18,7 +18,9 @@ exports.rateJob = handleAsync(async (req, res, next) => {
 		return next(new AppError('You are not authorized to rate', 403));
 
 	const { review } = await Job.findById(app.job);
-	const exists = review.map((rev) => rev.rater === req.user._id).length !== 0;
+	const exists =
+		review.filter((rev) => rev.rater.toString() === req.user._id.toString())
+			.length !== 0;
 
 	if (exists)
 		return next(new AppError('You have already rated for this job', 400));
@@ -52,8 +54,14 @@ exports.rateEmployee = handleAsync(async (req, res, next) => {
 	if (!app || app.length === 0)
 		return next(new AppError('No such Employee found', 404));
 
-	const { review } = await Applicant.findById(req.params.id);
-	const exists = review.map((rev) => rev.rater === req.user._id).length;
+	const applicant = await Applicant.findById(req.params.id);
+	if (!applicant)
+		return next(new AppError('The Applicant doesnot exist', 400));
+	const { review } = applicant;
+	console.log(req.user._id, req.params.id);
+	const exists =
+		review.filter((rev) => rev.rater.toString() === req.user._id.toString())
+			.length !== 0;
 
 	if (exists)
 		return next(new AppError('You have already rated this employee', 400));

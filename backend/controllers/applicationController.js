@@ -39,7 +39,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 	if (job.status === JOB_STATUS.FULL)
 		return next(
 			new AppError(
-				'All recruitments are already made.\nUnsuccessful Attempt.',
+				'No more applications are being accepted',
 				403
 			)
 		);
@@ -51,7 +51,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 	if (totalPositionsAlloted >= job.positions)
 		return next(
 			new AppError(
-				'Maximum limit of Applications reached.\nUnsuccessful Attempt.',
+				'All recruitments are already made.\nUnsuccessful Attempt.',
 				403
 			)
 		);
@@ -63,11 +63,14 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 
 	if (
 		await Application.countDocuments({
-			job: req.params.id,
 			applicant: req.user._id,
+			$or: [
+				{ job: req.params.id },
+				{ status: APPLICATION_STATUS.ACCEPTED },
+			],
 		})
 	)
-		return next(new AppError('You have already apllied for this job', 400));
+		return next(new AppError('You are not eligible to apply for this job.', 400));
 
 	const app = await Application.create({
 		job: req.params.id,
