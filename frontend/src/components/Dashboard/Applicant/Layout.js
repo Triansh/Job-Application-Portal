@@ -22,6 +22,7 @@ import Popup from '../../Controls/Popup';
 import Button from '../../Controls/Button';
 
 import ApplyForm from './ApplyForm';
+import RatingStars from '../../Controls/RatingStars';
 
 const Layout = () => {
   const heads = [
@@ -95,7 +96,9 @@ const Layout = () => {
                 <TableCell align="center">{item.salary}</TableCell>
                 <TableCell align="center">{item.duration}</TableCell>
                 <TableCell align="center">{new Date(item.deadline).toDateString()}</TableCell>
-                <TableCell align="center">{item.avgRating}</TableCell>
+                <TableCell align="center">
+                  <RatingStars readOnly precision={0.5} value={item.avgRating} />
+                </TableCell>
                 <TableCell align="center">
                   <ActionIcons item={item} />
                 </TableCell>

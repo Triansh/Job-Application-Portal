@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import RateComponent from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Button from '../Controls/Button';
 import { rateJob } from '../../api/ratingRequests';
 import { setStatus } from '../../features/statusSlice';
+import RatingStars from '../Controls/RatingStars';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const RateForm = ({ employee, link, itemToRate, fetchAgain, setFetchAgain, setOpenPopup, submitFn , itemName}) => {
+const RateForm = ({ link, itemToRate, fetchAgain, setFetchAgain, setOpenPopup, submitFn, itemName }) => {
   const [rating, setRating] = useState({ rating: 4 });
 
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const RateForm = ({ employee, link, itemToRate, fetchAgain, setFetchAgain, setOp
   };
 
   useEffect(() => {
-    setRating({ ...rating, id: employee ? itemToRate.applicant._id : itemToRate._id });
+    setRating({ ...rating, id: itemToRate._id });
   }, [itemToRate]);
 
   const handleSubmit = async (e) => {
@@ -56,7 +56,7 @@ const RateForm = ({ employee, link, itemToRate, fetchAgain, setFetchAgain, setOp
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <div className={classes.root}>
-            <RateComponent defaultValue={2} size="large" />
+            <RatingStars name="rating" value={rating.rating} onChange={handleChange} size="large" />
           </div>
         </Grid>
         <Grid item xs={12} style={{ textAlign: 'center' }}>

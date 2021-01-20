@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { TableBody, TableCell, TableRow } from '@material-ui/core';
+import { TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import GradeIcon from '@material-ui/icons/Grade';
 
@@ -19,6 +19,7 @@ import { sort } from '../../../utils/utils';
 
 import RateForm from '../RateForm';
 import { rateEmployee } from '../../../api/ratingRequests';
+import RatingStars from '../../Controls/RatingStars';
 
 const MyEmployees = () => {
   const heads = [
@@ -26,6 +27,7 @@ const MyEmployees = () => {
     { label: 'Job Title', id: 'job.title', nested: true },
     { label: 'Type of Job', id: 'job.type' },
     { label: 'Date of Joining', id: 'createdAt' },
+    { label: 'Employee Rating', id: 'avgRating' },
   ];
 
   const [emps, setEmps] = useState([]);
@@ -74,7 +76,7 @@ const MyEmployees = () => {
     if (hasRated) return <Button disabled style={{ border: '2px solid 	#03C03C', borderRadius: '50px', color: '	#1F75FE' }} text="Rated" size="medium" variant="outlined" endIcon={<ThumbUpIcon />} />;
     else
       return (
-        <Button disabled={item.status !== 'Accepted'} onClick={() => onRateClick(item)} style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#0000CD' }} text="Rate Now" size="medium" variant="outlined" startIcon={<GradeIcon />} />
+        <Button disabled={item.status !== 'Accepted'} onClick={() => onRateClick(item.applicant)} style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#0000CD' }} text="Rate Now" size="medium" variant="outlined" startIcon={<GradeIcon />} />
       );
   };
 
@@ -93,6 +95,9 @@ const MyEmployees = () => {
                 </TableCell>
                 <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
                 <TableCell align="center">
+                  <RatingStars readOnly precision={0.5} value={item.applicant.avgRating}  />
+                </TableCell>
+                <TableCell align="center">
                   <ActionIcons item={item} />
                 </TableCell>
               </TableRow>
@@ -101,7 +106,7 @@ const MyEmployees = () => {
         </Table>
       </PageHeader>
       <Popup title="Rate this job" openPopup={ratePopup} setOpenPopup={setRatePopup}>
-        <RateForm  link ="/employees"itemName="Employee" employee={true} submitFn={rateEmployee} itemToRate={empToRate} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setRatePopup} />
+        <RateForm link="/employees" itemName="Employee" submitFn={rateEmployee} itemToRate={empToRate} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setRatePopup} />
       </Popup>
     </Navbar>
   );
