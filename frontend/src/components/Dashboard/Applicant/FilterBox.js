@@ -41,20 +41,20 @@ const FilterBox = ({ filter, setFilter, onFilterClick }) => {
   return (
     <Container style={{ margin: '3rem 0rem 3rem 4rem' }}>
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={7}>
+        <Grid item xs={7} >
           <RadioButtons row name="type" value={filter.type} label="Type of Job" options={jobTypeOptions} onChange={(e) => handleChange(e)} />
+        </Grid>
+        <Grid item sm={3} xs={4} style={{margin: "auto"}}>
+          <Button color="primary" text="Filter" onClick={onFilterClick} />
         </Grid>
         <Grid item xs={12} sm={3}>
           <Dropmenu name="duration" value={filter.duration} label="Duration" options={durationOptions} onChange={(e) => handleChange(e)} />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <PlainInput name="minSalary" value={filter.minSalary} label="Minimum salary" onChange={(e) => handleChange(e)} />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <PlainInput name="maxSalary" value={filter.maxSalary} label="Maximum salary" onChange={(e) => handleChange(e)} />
-        </Grid>
-        <Grid item sm={4} xs={12}>
-          <Button color="primary" text="Filter" onClick={onFilterClick} />
         </Grid>
       </Grid>
     </Container>
