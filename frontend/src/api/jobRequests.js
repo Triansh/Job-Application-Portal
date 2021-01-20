@@ -8,7 +8,7 @@ export const updateJob = (job, jobId) => axios.patch(`${url}/${jobId}`, job);
 
 export const deleteJob = (jobId) => axios.delete(`${url}/${jobId}`);
 
-export const getApplicantJobs = () => axios.get(`${url}/all`);
+export const getApplicantJobs = (query = '') => axios.get(`${url}/all?${query}`);
 
 export const getRecruiterJobs = () => axios.get(url);
 

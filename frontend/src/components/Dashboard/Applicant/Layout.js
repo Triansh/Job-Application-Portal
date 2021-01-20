@@ -27,10 +27,11 @@ import RatingStars from '../../Controls/RatingStars';
 const Layout = () => {
   const heads = [
     { label: 'Title', id: 'title' },
-    { label: 'Recruiter Name', id: 'recruiter.name', nested: true },
+    { label: 'Recruiter Name', id: 'recruiter.name' },
+    { label: 'Type of Job', id: 'type' },
     { label: 'Salary', id: 'salary' },
     { label: 'Duration', id: 'duration' },
-    { label: 'Deadline', id: 'deadline', date: true },
+    { label: 'Deadline', id: 'deadline' },
     { label: 'Rating', id: 'avgRating' },
   ];
 
@@ -38,7 +39,7 @@ const Layout = () => {
   const [searchJobs, setSearchJobs] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  // const [filter, setFilter] = useState({ minSalary: '', maxSalary: '', duration: '0', type: '' });
+  const [filter, setFilter] = useState({ minSalary: '', maxSalary: '', duration: '', type: '', query: '' });
   const [sortBy, setSortBy] = useState({ term: '', order: '' });
   const [applyPopup, setApplyPopup] = useState(false);
   const [jobToApply, setJobToApply] = useState({});
@@ -46,14 +47,17 @@ const Layout = () => {
   const dispatch = useDispatch();
 
   const fetchJobs = async () => {
+    console.log(filter);
     const {
       data: {
         data: { data },
       },
-    } = await getApplicantJobs();
+    } = await getApplicantJobs(filter.query);
     console.log(data);
     setJobs(data);
   };
+
+  const onFilterClick = () => setFetchAgain(!fetchAgain);
 
   useEffect(() => {
     const term = searchTerm.split(' ').join('').toLowerCase();
@@ -85,7 +89,8 @@ const Layout = () => {
 
   return (
     <Navbar>
-      <PageHeader btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
+      <PageHeader onFilterClick={onFilterClick} btnDisable setSearchTerm={setSearchTerm} value={searchTerm} filter={filter} setFilter={setFilter}>
+        {/* <FilterBox /> */}
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>
@@ -93,6 +98,9 @@ const Layout = () => {
               <TableRow key={item._id}>
                 <TableCell align="center">{item.title}</TableCell>
                 <TableCell align="center">{item.recruiter.name}</TableCell>
+                <TableCell align="center" style={{ textTransform: 'capitalize' }}>
+                  {item.type.split('-').join(' ')}
+                </TableCell>
                 <TableCell align="center">{item.salary}</TableCell>
                 <TableCell align="center">{item.duration}</TableCell>
                 <TableCell align="center">{new Date(item.deadline).toDateString()}</TableCell>

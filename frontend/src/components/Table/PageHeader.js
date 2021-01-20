@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Button from '../Controls/Button';
 import SearchBox from '../Controls/SearchBox';
+import FilterBox from '../Dashboard/Applicant/FilterBox';
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -14,24 +15,26 @@ const useStyles = makeStyles((theme) => ({
   searchInput: {
     width: '75%',
   },
+  toolBar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     position: 'absolute',
     right: '10px',
   },
 }));
 
-const PageHeader = ({ setSearchTerm, setOpenPopup, children, value, btnDisable, ...rest }) => {
+const PageHeader = ({ filter, setFilter, setSearchTerm, setOpenPopup, children, value, btnDisable, onFilterClick, ...rest }) => {
   const classes = useStyles();
 
-  const handleSearch = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-  };
+  const handleSearch = (e) => setSearchTerm(e.target.value);
 
   return (
     <>
       <Paper className={classes.pageContent}>
-        <Toolbar>
+        <Toolbar className={btnDisable ? '' : classes.toolbar}>
           <SearchBox label="Search Jobs" onChange={handleSearch} value={value} {...rest} className={classes.searchInput} />
 
           {!btnDisable ? (
@@ -48,6 +51,8 @@ const PageHeader = ({ setSearchTerm, setOpenPopup, children, value, btnDisable, 
           ) : (
             <></>
           )}
+
+          {filter ? <FilterBox filter={filter} setFilter={setFilter} onFilterClick={onFilterClick} {...rest} /> : <></>}
         </Toolbar>
         {children}
       </Paper>
