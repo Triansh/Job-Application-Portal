@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { TableBody, TableCell, TableRow } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import GradeIcon from '@material-ui/icons/Grade';
 
 import { getAllEmployees } from '../../../api/applicationRequests';
+import { rateEmployee } from '../../../api/ratingRequests';
+
+import { sort } from '../../../utils/utils';
 
 import Navbar from '../../Navbar/Navbar';
 
@@ -15,21 +18,11 @@ import Table from '../../Table/Table';
 
 import Popup from '../../Controls/Popup';
 import Button from '../../Controls/Button';
-import { sort } from '../../../utils/utils';
-
-import RateForm from '../RateForm';
-import { rateEmployee } from '../../../api/ratingRequests';
 import RatingStars from '../../Controls/RatingStars';
 
-const MyEmployees = () => {
-  const heads = [
-    { label: 'Name of Employee', id: 'applicant.name' },
-    { label: 'Job Title', id: 'job.title', nested: true },
-    { label: 'Type of Job', id: 'job.type' },
-    { label: 'Date of Joining', id: 'createdAt' },
-    { label: 'Employee Rating', id: 'avgRating' },
-  ];
+import RateForm from '../RateForm';
 
+const MyEmployees = () => {
   const [emps, setEmps] = useState([]);
   const [searchEmps, setSearchEmps] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -40,15 +33,23 @@ const MyEmployees = () => {
 
   const dispatch = useDispatch();
 
-  const fetchEmployees = async () => {
-    const {
-      data: {
+  const heads = [
+    { label: 'Name of Employee', id: 'applicant.name' },
+    { label: 'Job Title', id: 'job.title', nested: true },
+    { label: 'Type of Job', id: 'job.type' },
+    { label: 'Date of Joining', id: 'createdAt' },
+    { label: 'Employee Rating', id: 'avgRating' },
+  ];
+
+  useEffect(() => {
+    (async () => {
+      const {
         data: { data },
-      },
-    } = await getAllEmployees();
-    console.log(data);
-    setEmps(data);
-  };
+      } = await getAllEmployees();
+      console.log(data);
+      setEmps(data);
+    })();
+  }, [dispatch, fetchAgain]);
 
   useEffect(() => {
     const term = searchTerm.split(' ').join('').toLowerCase();
@@ -58,10 +59,6 @@ const MyEmployees = () => {
     setSearchEmps(newEmps);
   }, [searchTerm, sortBy, emps]);
 
-  useEffect(() => {
-    fetchEmployees();
-  }, [dispatch, fetchAgain]);
-
   const onRateClick = (item) => {
     setRatePopup(true);
     setEmpToRate(item);
@@ -70,20 +67,28 @@ const MyEmployees = () => {
   const ActionIcons = ({ item }) => {
     const userId = item.recruiter;
     const { review } = item.applicant;
-    console.log(userId, review, item.applicant._id)
+    console.log(userId, review, item.applicant._id);
     const ratingExists = review.filter(({ rater }) => rater === userId);
     const hasRated = !ratingExists || !ratingExists.length ? false : true;
 
     if (hasRated) return <Button disabled style={{ border: '2px solid 	#03C03C', borderRadius: '50px', color: '	#1F75FE' }} text="Rated" size="medium" variant="outlined" endIcon={<ThumbUpIcon />} />;
     else
       return (
-        <Button disabled={item.status !== 'Accepted'} onClick={() => onRateClick(item.applicant)} style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#0000CD' }} text="Rate Now" size="medium" variant="outlined" startIcon={<GradeIcon />} />
+        <Button
+          disabled={item.status !== 'Accepted'}
+          onClick={() => onRateClick(item.applicant)}
+          style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#0000CD' }}
+          text="Rate Now"
+          size="medium"
+          variant="outlined"
+          startIcon={<GradeIcon />}
+        />
       );
   };
 
   return (
     <Navbar>
-      <PageHeader btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
+      <PageHeader searchLabel="Search Employees"  btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>
@@ -96,7 +101,7 @@ const MyEmployees = () => {
                 </TableCell>
                 <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
                 <TableCell align="center">
-                  <RatingStars readOnly precision={0.5} value={item.applicant.avgRating}  />
+                  <RatingStars readOnly precision={0.5} value={item.applicant.avgRating} />
                 </TableCell>
                 <TableCell align="center">
                   <ActionIcons item={item} />

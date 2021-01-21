@@ -86,7 +86,7 @@ const Navbar = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Hi there
           </Typography>
         </Toolbar>
       </AppBar>

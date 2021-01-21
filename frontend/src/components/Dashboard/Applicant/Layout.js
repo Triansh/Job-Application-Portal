@@ -17,7 +17,7 @@ import PageHeader from '../../Table/PageHeader';
 import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
-import { sort } from '../../../utils/utils';
+import { sendError, sort } from '../../../utils/utils';
 import Popup from '../../Controls/Popup';
 import Button from '../../Controls/Button';
 
@@ -25,16 +25,6 @@ import ApplyForm from './ApplyForm';
 import RatingStars from '../../Controls/RatingStars';
 
 const Layout = () => {
-  const heads = [
-    { label: 'Title', id: 'title' },
-    { label: 'Recruiter Name', id: 'recruiter.name' },
-    { label: 'Type of Job', id: 'type' },
-    { label: 'Salary', id: 'salary' },
-    { label: 'Duration', id: 'duration' },
-    { label: 'Deadline', id: 'deadline' },
-    { label: 'Rating', id: 'avgRating' },
-  ];
-
   const [jobs, setJobs] = useState([]);
   const [searchJobs, setSearchJobs] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -46,18 +36,29 @@ const Layout = () => {
 
   const dispatch = useDispatch();
 
-  const fetchJobs = async () => {
-    console.log(filter);
-    const {
-      data: {
-        data: { data },
-      },
-    } = await getApplicantJobs(filter.query);
-    console.log(data);
-    setJobs(data);
-  };
+  const heads = [
+    { label: 'Title', id: 'title' },
+    { label: 'Recruiter Name', id: 'recruiter.name' },
+    { label: 'Type of Job', id: 'type' },
+    { label: 'Salary', id: 'salary' },
+    { label: 'Duration', id: 'duration' },
+    { label: 'Deadline', id: 'deadline' },
+    { label: 'Rating', id: 'avgRating' },
+  ];
 
-  const onFilterClick = () => setFetchAgain(!fetchAgain);
+  useEffect(() => {
+    (async () => {
+      try {
+        const {
+          data: { data },
+        } = await getApplicantJobs(filter.query);
+        console.log(data);
+        setJobs(data);
+      } catch (err) {
+        sendError(dispatch, err);
+      }
+    })();
+  }, [dispatch, fetchAgain]);
 
   useEffect(() => {
     const term = searchTerm.split(' ').join('').toLowerCase();
@@ -67,14 +68,12 @@ const Layout = () => {
     setSearchJobs(newJobs);
   }, [searchTerm, sortBy, jobs]);
 
-  useEffect(() => {
-    fetchJobs();
-  }, [dispatch, fetchAgain]);
-
   const onApplyClick = (item) => {
     setApplyPopup(true);
     setJobToApply(item);
   };
+
+  const onFilterClick = () => setFetchAgain(!fetchAgain);
 
   const ActionIcons = ({ item }) => {
     if (item.status === 'Full') return <Button style={{ border: '2px solid 	#BF00FF', borderRadius: '50px', color: '		#7851A9' }} text="Full" size="medium" variant="outlined" startIcon={<AssignmentTurnedInIcon />} />;
@@ -90,7 +89,6 @@ const Layout = () => {
   return (
     <Navbar>
       <PageHeader onFilterClick={onFilterClick} btnDisable setSearchTerm={setSearchTerm} value={searchTerm} filter={filter} setFilter={setFilter}>
-        {/* <FilterBox /> */}
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>

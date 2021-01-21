@@ -38,10 +38,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 
 	if (job.status === JOB_STATUS.FULL)
 		return next(
-			new AppError(
-				'No more applications are being accepted',
-				403
-			)
+			new AppError('No more applications are being accepted', 403)
 		);
 
 	const totalPositionsAlloted = await Application.countDocuments({
@@ -70,7 +67,9 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 			],
 		})
 	)
-		return next(new AppError('You are not eligible to apply for this job.', 400));
+		return next(
+			new AppError('You are not eligible to apply for this job.', 400)
+		);
 
 	const app = await Application.create({
 		job: req.params.id,
@@ -107,7 +106,7 @@ exports.getNRApplicationsForJob = handleAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: { data: apps },
+		data: apps,
 	});
 });
 
@@ -157,7 +156,7 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: { data: employees },
+		data: employees,
 	});
 });
 
@@ -173,7 +172,7 @@ exports.getMyApplications = handleAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: { data: apps },
+		data: apps,
 	});
 });
 

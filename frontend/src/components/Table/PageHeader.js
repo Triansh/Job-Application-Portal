@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageHeader = ({ filter, setFilter, setSearchTerm, setOpenPopup, children, value, btnDisable, onFilterClick, ...rest }) => {
+const PageHeader = ({ searchLabel, filter, setFilter, setSearchTerm, setOpenPopup, children, value, btnDisable, onFilterClick, ...rest }) => {
   const classes = useStyles();
 
   const handleSearch = (e) => setSearchTerm(e.target.value);
@@ -35,7 +35,7 @@ const PageHeader = ({ filter, setFilter, setSearchTerm, setOpenPopup, children, 
     <>
       <Paper className={classes.pageContent}>
         <Toolbar className={btnDisable ? '' : classes.toolbar}>
-          <SearchBox label="Search Jobs" onChange={handleSearch} value={value} {...rest} className={classes.searchInput} />
+          <SearchBox label={searchLabel ||"Search Jobs"} onChange={handleSearch} value={value} {...rest} className={classes.searchInput} />
 
           {!btnDisable ? (
             <Button

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import roleReducer from '../features/roleSlice';
+import userReducer from '../features/userSlice';
 import statusReducer from '../features/statusSlice';
 
 export default combineReducers({
   status: statusReducer,
-  role: roleReducer,
+  user: userReducer,
 });

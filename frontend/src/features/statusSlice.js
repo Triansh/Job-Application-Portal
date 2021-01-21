@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const statusSlice = createSlice({
-  name: 'role',
+  name: 'status',
   initialState: { status: '', message: '' },
   reducers: {
     setStatus(state, action) {

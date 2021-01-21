@@ -1,9 +1,9 @@
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
 import { updateJob } from '../../../api/jobRequests';
 import { setStatus } from '../../../features/statusSlice';
+import { sendError } from '../../../utils/utils';
 import Button from '../../Controls/Button';
 import { DateTimeInput, PlainInput } from '../../Controls/Input';
 
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 const UpdateJobForm = ({ jobToEdit, fetchAgain, setFetchAgain, setOpenPopup }) => {
   const [job, setJob] = useState({});
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -35,13 +34,10 @@ const UpdateJobForm = ({ jobToEdit, fetchAgain, setFetchAgain, setOpenPopup }) =
     try {
       await updateJob(job, job._id);
       setOpenPopup(false);
-      history.push('/');
       setFetchAgain(!fetchAgain);
       dispatch(setStatus({ status: 'success', message: 'Job Updated successfully' }));
     } catch (error) {
-      console.log(error);
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
 

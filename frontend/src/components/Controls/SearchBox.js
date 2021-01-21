@@ -1,4 +1,5 @@
 import { InputAdornment, TextField } from '@material-ui/core';
+
 import { Search } from '@material-ui/icons';
 
 const SearchBox = ({ onChange, label, value, name, ...rest }) => {

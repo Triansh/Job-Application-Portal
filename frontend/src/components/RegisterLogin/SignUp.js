@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { registerUser, setHeaders } from '../../api/userRequests';
 import { setStatus } from '../../features/statusSlice';
-import { setRole } from '../../features/roleSlice';
+import { setRole } from '../../features/userSlice';
 
 import { TextInput } from '../Controls/Input';
 import Dropmenu from '../Controls/Dropmenu';

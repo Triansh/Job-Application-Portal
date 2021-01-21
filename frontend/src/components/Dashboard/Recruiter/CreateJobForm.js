@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
 
 import { Grid, makeStyles } from '@material-ui/core';
 import { createJob } from '../../../api/jobRequests';
@@ -13,6 +12,7 @@ import Dropmenu from '../../Controls/Dropmenu';
 import { DateTimeInput, PlainInput } from '../../Controls/Input';
 import MultiSelect from '../../Controls/MultiSelect';
 import RadioButtons from '../../Controls/RadioButtons';
+import { sendError } from '../../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,15 +26,30 @@ const useStyles = makeStyles((theme) => ({
 const NewJobForm = ({ setOpenPopup, fetchAgain, setFetchAgain, ...rest }) => {
   const classes = useStyles();
 
-  const [job, setJob] = useState({ title: '', applications: '', positions: '', deadline: '', skills: [], skillText: '', type: 'full-time', duration: 6, salary: '' });
+  const [job, setJob] = useState({ title: '', applications: '', positions: '', deadline: Date.now(), skills: [], skillText: '', type: 'full-time', duration: 6, salary: '' });
+
+  const dispatch = useDispatch();
+
+  const jobTypeOptions = [
+    { value: 'full-time', label: 'Full time' },
+    { value: 'part-time', label: 'Part time' },
+    { value: 'work-from-home', label: 'Work from Home' },
+  ];
+
+  const durationOptions = [
+    { value: 0, label: '0' },
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+    { value: 6, label: '6' },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setJob({ ...job, [name]: value });
   };
-
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,29 +63,12 @@ const NewJobForm = ({ setOpenPopup, fetchAgain, setFetchAgain, ...rest }) => {
     try {
       await createJob({ ...job, skills: allSkills });
       setOpenPopup(false);
-      setFetchAgain(!fetchAgain)
-      history.push('/');
+      setFetchAgain(!fetchAgain);
       dispatch(setStatus({ status: 'success', message: 'Job created successfully' }));
     } catch (error) {
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
-
-  const jobTypeOptions = [
-    { value: 'full-time', label: 'Full time' },
-    { value: 'part-time', label: 'Part time' },
-    { value: 'work-from-home', label: 'Work from Home' },
-  ];
-  const durationOptions = [
-    { value: 0, label: '0' },
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' },
-    { value: 6, label: '6' },
-  ];
 
   return (
     <form className={classes.root} autoComplete="off" {...rest} onSubmit={handleSubmit}>

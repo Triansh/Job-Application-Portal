@@ -5,7 +5,6 @@ import { TableBody, TableCell, TableRow } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import LoopIcon from '@material-ui/icons/Loop';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import GradeIcon from '@material-ui/icons/Grade';
 import SmsIcon from '@material-ui/icons/Sms';
@@ -24,14 +23,7 @@ import RateForm from '../RateForm';
 import { rateJob } from '../../../api/ratingRequests';
 
 const MyApplications = () => {
-  const heads = [
-    { label: 'Job Title', id: 'job.title' },
-    { label: 'Recruiter Name', id: 'recruiter.name', nested: true },
-    { label: 'Salary', id: 'job.salary' },
-    { label: 'Date of posting', id: 'createdAt' },
-    { label: 'Status', id: 'status' },
-  ];
-
+  
   const [apps, setApps] = useState([]);
   const [searchApps, setSearchApps] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -42,15 +34,23 @@ const MyApplications = () => {
 
   const dispatch = useDispatch();
 
-  const fetchApplications = async () => {
-    const {
-      data: {
+  const heads = [
+    { label: 'Job Title', id: 'job.title' },
+    { label: 'Recruiter Name', id: 'recruiter.name', nested: true },
+    { label: 'Salary', id: 'job.salary' },
+    { label: 'Date of posting', id: 'createdAt' },
+    { label: 'Status', id: 'status' },
+  ];
+
+  useEffect(() => {
+    (async () => {
+      const {
         data: { data },
-      },
-    } = await getApplicantApplications();
-    console.log(data);
-    setApps(data);
-  };
+      } = await getApplicantApplications();
+      console.log(data);
+      setApps(data);
+    })();
+  }, [dispatch, fetchAgain]);
 
   useEffect(() => {
     const term = searchTerm.split(' ').join('').toLowerCase();
@@ -59,10 +59,6 @@ const MyApplications = () => {
     newApps = newApps.filter((item) => item.job.title.split(' ').join('').toLowerCase().includes(term));
     setSearchApps(newApps);
   }, [searchTerm, sortBy, apps]);
-
-  useEffect(() => {
-    fetchApplications();
-  }, [dispatch, fetchAgain]);
 
   const onRateClick = (item) => {
     setRatePopup(true);

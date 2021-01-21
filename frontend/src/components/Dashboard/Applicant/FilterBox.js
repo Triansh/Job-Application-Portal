@@ -6,20 +6,6 @@ import { PlainInput } from '../../Controls/Input';
 import RadioButtons from '../../Controls/RadioButtons';
 
 const FilterBox = ({ filter, setFilter, onFilterClick }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newFilter = { ...filter, [name]: value };
-    let { type, minSalary, maxSalary, duration } = newFilter;
-
-    let query = '';
-    if (type) query = `${query}type=${type}&`;
-    if (duration) query = `${query}duration[lt]=${duration}&`;
-    if (minSalary) query = `${query}salary[gte]=${minSalary}&`;
-    if (maxSalary) query = `${query}salary[lte]=${maxSalary}&`;
-
-    setFilter({ ...newFilter, query });
-  };
-
   const jobTypeOptions = [
     { value: '', label: 'None' },
     { value: 'full-time', label: 'Full time' },
@@ -38,13 +24,27 @@ const FilterBox = ({ filter, setFilter, onFilterClick }) => {
     { value: 7, label: '7' },
   ];
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newFilter = { ...filter, [name]: value };
+    let { type, minSalary, maxSalary, duration } = newFilter;
+
+    let query = '';
+    if (type) query = `${query}type=${type}&`;
+    if (duration) query = `${query}duration[lt]=${duration}&`;
+    if (minSalary) query = `${query}salary[gte]=${minSalary}&`;
+    if (maxSalary) query = `${query}salary[lte]=${maxSalary}&`;
+
+    setFilter({ ...newFilter, query });
+  };
+
   return (
     <Container style={{ margin: '3rem 0rem 3rem 4rem' }}>
       <Grid container spacing={4}>
-        <Grid item xs={7} >
+        <Grid item xs={7}>
           <RadioButtons row name="type" value={filter.type} label="Type of Job" options={jobTypeOptions} onChange={(e) => handleChange(e)} />
         </Grid>
-        <Grid item sm={3} xs={4} style={{margin: "auto"}}>
+        <Grid item sm={3} xs={4} style={{ margin: 'auto' }}>
           <Button color="primary" text="Filter" onClick={onFilterClick} />
         </Grid>
         <Grid item xs={12} sm={3}>

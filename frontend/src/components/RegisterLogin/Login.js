@@ -6,12 +6,13 @@ import { Avatar, Box, Grid, Link, Container, Button, Typography, CssBaseline } f
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { setStatus } from '../../features/statusSlice';
-import { setRole } from '../../features/roleSlice';
+import { setRole } from '../../features/userSlice';
 import { loginUser, setHeaders } from '../../api/userRequests';
 
 import Input from '../Controls/Input';
 import useStyles from './styles';
 import Copyright from './Copyright';
+import { sendError } from '../../utils/utils';
 
 export default function SignIn() {
   const classes = useStyles();
@@ -37,8 +38,7 @@ export default function SignIn() {
       dispatch(setRole({ role: data.user.role }));
       dispatch(setStatus({ status, message: 'Login successful' }));
     } catch (error) {
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
 

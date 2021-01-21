@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 
 import { Grid, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import LoopIcon from '@material-ui/icons/Loop';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import GradeIcon from '@material-ui/icons/Grade';
 import SmsIcon from '@material-ui/icons/Sms';
+
+import { getJobApplications } from '../../../api/jobRequests';
+import { updateApplicationStatus } from '../../../api/applicationRequests';
+
+import { setStatus } from '../../../features/statusSlice';
+
+import { sendError, sort } from '../../../utils/utils';
 
 import Navbar from '../../Navbar/Navbar';
 
@@ -16,29 +22,11 @@ import PageHeader from '../../Table/PageHeader';
 import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
-import { sort } from '../../../utils/utils';
-import Popup from '../../Controls/Popup';
 import Button from '../../Controls/Button';
-import RateForm from '../RateForm';
-import { rateJob } from '../../../api/ratingRequests';
-import { useParams } from 'react-router';
-import { getJobApplications } from '../../../api/jobRequests';
 import RatingStars from '../../Controls/RatingStars';
 import DialogBox from '../../Controls/DialogBox';
-import { updateApplicationStatus } from '../../../api/applicationRequests';
-import { setStatus } from '../../../features/statusSlice';
 
 const JobApplications = () => {
-  const heads = [
-    { label: 'Name', id: 'applicant.name' },
-    { label: 'skills', id: 'applicant.skills', nested: true },
-    { label: 'Date of Application', id: 'createdAt' },
-    { label: 'Education', id: 'applicant.education' },
-    { label: 'SOP', id: 'sop' },
-    { label: 'Rating', id: 'applicant.avgRating' },
-    { label: 'Current Application Status', id: 'status' },
-  ];
-
   const [apps, setApps] = useState([]);
   const [searchApps, setSearchApps] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -51,15 +39,25 @@ const JobApplications = () => {
   const dispatch = useDispatch();
   const params = useParams();
 
-  const fetchApplications = async () => {
-    const {
-      data: {
+  const heads = [
+    { label: 'Name', id: 'applicant.name' },
+    { label: 'skills', id: 'applicant.skills', nested: true },
+    { label: 'Date of Application', id: 'createdAt' },
+    { label: 'Education', id: 'applicant.education' },
+    { label: 'SOP', id: 'sop' },
+    { label: 'Rating', id: 'applicant.avgRating' },
+    { label: 'Current Application Status', id: 'status' },
+  ];
+
+  useEffect(() => {
+    (async () => {
+      const {
         data: { data },
-      },
-    } = await getJobApplications(params.id);
-    console.log(data);
-    setApps(data);
-  };
+      } = await getJobApplications(params.id);
+      console.log(data);
+      setApps(data);
+    })();
+  }, [dispatch, fetchAgain]);
 
   useEffect(() => {
     const term = searchTerm.split(' ').join('').toLowerCase();
@@ -78,15 +76,9 @@ const JobApplications = () => {
       setFetchAgain(!fetchAgain);
       dispatch(setStatus({ status: 'success', message: 'Application status updated successfully' }));
     } catch (error) {
-      console.log(error);
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
-
-  useEffect(() => {
-    fetchApplications();
-  }, [dispatch, fetchAgain]);
 
   const DisplayEducation = ({ educationList }) => {
     return (

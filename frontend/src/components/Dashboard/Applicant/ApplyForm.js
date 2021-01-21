@@ -2,10 +2,11 @@ import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { createApplication} from '../../../api/jobRequests';
+import { createApplication } from '../../../api/jobRequests';
 import { setStatus } from '../../../features/statusSlice';
+import { sendError } from '../../../utils/utils';
 import Button from '../../Controls/Button';
-import {  TextArea } from '../../Controls/Input';
+import { TextArea } from '../../Controls/Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +22,14 @@ const ApplyForm = ({ jobToApply, fetchAgain, setFetchAgain, setOpenPopup }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    setSop({ ...sop, id: jobToApply._id });
+  }, [jobToApply]);
+
   const handleChange = (e) => {
     const { value, name } = e.target;
     setSop({ ...sop, [name]: value });
   };
-
-  useEffect(() => {
-    setSop({ ...sop, id: jobToApply._id });
-  }, [jobToApply]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,9 +40,7 @@ const ApplyForm = ({ jobToApply, fetchAgain, setFetchAgain, setOpenPopup }) => {
       setFetchAgain(!fetchAgain);
       dispatch(setStatus({ status: 'success', message: 'Application created successfully' }));
     } catch (error) {
-      console.log(error);
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
 

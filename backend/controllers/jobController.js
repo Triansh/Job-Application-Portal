@@ -23,10 +23,9 @@ const getAllJobs = handleAsync(async (req, res, next) => {
 		})
 		.select('-applications -positions -skills -__v ');
 
-
 	res.status(201).json({
 		status: 'success',
-		data: { data: jobs },
+		data: jobs,
 	});
 });
 
@@ -41,7 +40,7 @@ const getMyActiveJobs = handleAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: { data: jobs },
+		data: jobs,
 	});
 });
 

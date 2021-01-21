@@ -18,11 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedSnackbars() {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
-
   const dispatch = useDispatch();
-
   const status = useSelector((state) => state.status);
 
   useEffect(() => {
@@ -38,6 +35,8 @@ export default function CustomizedSnackbars() {
     setOpen(false);
     dispatch(setStatus({ status: '', message: '' }));
   };
+
+  const classes = useStyles();
 
   return status.status ? (
     <div className={classes.root}>

@@ -4,7 +4,7 @@ import ApplicantLayout from './Applicant/Layout';
 import RecruiterLayout from './Recruiter/Layout';
 
 const Dashboard = () => {
-  const role = useSelector((state) => state.role);
+  const { role } = useSelector((state) => state.user);
 
   if (role === 'Applicant') return <ApplicantLayout />;
   else if (role === 'Recruiter') return <RecruiterLayout />;
