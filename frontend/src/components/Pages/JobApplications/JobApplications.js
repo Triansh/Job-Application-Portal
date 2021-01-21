@@ -51,11 +51,15 @@ const JobApplications = () => {
 
   useEffect(() => {
     (async () => {
-      const {
-        data: { data },
-      } = await getJobApplications(params.id);
-      console.log(data);
-      setApps(data);
+      try {
+        const {
+          data: { data },
+        } = await getJobApplications(params.id);
+        console.log(data);
+        setApps(data);
+      } catch (error) {
+        sendError(dispatch, error);
+      }
     })();
   }, [dispatch, fetchAgain]);
 

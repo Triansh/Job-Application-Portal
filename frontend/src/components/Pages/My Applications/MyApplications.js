@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { TableBody, TableCell, TableRow } from '@material-ui/core';
+
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import LoopIcon from '@material-ui/icons/Loop';
@@ -9,21 +10,23 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import GradeIcon from '@material-ui/icons/Grade';
 import SmsIcon from '@material-ui/icons/Sms';
 
+import { rateJob } from '../../../api/ratingRequests';
+import { getApplicantApplications } from '../../../api/applicationRequests';
+
+import { sendError, sort } from '../../../utils/utils';
+
 import Navbar from '../../Navbar/Navbar';
 
 import PageHeader from '../../Table/PageHeader';
 import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
-import { sort } from '../../../utils/utils';
 import Popup from '../../Controls/Popup';
 import Button from '../../Controls/Button';
-import { getApplicantApplications } from '../../../api/applicationRequests';
+
 import RateForm from '../RateForm';
-import { rateJob } from '../../../api/ratingRequests';
 
 const MyApplications = () => {
-  
   const [apps, setApps] = useState([]);
   const [searchApps, setSearchApps] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -44,11 +47,15 @@ const MyApplications = () => {
 
   useEffect(() => {
     (async () => {
-      const {
-        data: { data },
-      } = await getApplicantApplications();
-      console.log(data);
-      setApps(data);
+      try {
+        const {
+          data: { data },
+        } = await getApplicantApplications();
+        console.log(data);
+        setApps(data);
+      } catch (error) {
+        sendError(dispatch, error);
+      }
     })();
   }, [dispatch, fetchAgain]);
 

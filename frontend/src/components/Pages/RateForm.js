@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { Grid } from '@material-ui/core';
-import Button from '../Controls/Button';
-import { rateJob } from '../../api/ratingRequests';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { setStatus } from '../../features/statusSlice';
+
+import { sendError } from '../../utils/utils';
+
+import Button from '../Controls/Button';
 import RatingStars from '../Controls/RatingStars';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,14 +29,14 @@ const RateForm = ({ link, itemToRate, fetchAgain, setFetchAgain, setOpenPopup, s
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    setRating({ ...rating, id: itemToRate._id });
+  }, [itemToRate]);
+
   const handleChange = (e) => {
     const { value, name } = e.target;
     setRating({ ...rating, [name]: value });
   };
-
-  useEffect(() => {
-    setRating({ ...rating, id: itemToRate._id });
-  }, [itemToRate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,9 +47,7 @@ const RateForm = ({ link, itemToRate, fetchAgain, setFetchAgain, setOpenPopup, s
       setFetchAgain(!fetchAgain);
       dispatch(setStatus({ status: 'success', message: `You have successfully rated for this ${itemName}` }));
     } catch (error) {
-      console.log(error);
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
 

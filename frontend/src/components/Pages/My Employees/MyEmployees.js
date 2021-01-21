@@ -8,7 +8,7 @@ import GradeIcon from '@material-ui/icons/Grade';
 import { getAllEmployees } from '../../../api/applicationRequests';
 import { rateEmployee } from '../../../api/ratingRequests';
 
-import { sort } from '../../../utils/utils';
+import { sendError, sort } from '../../../utils/utils';
 
 import Navbar from '../../Navbar/Navbar';
 
@@ -43,11 +43,15 @@ const MyEmployees = () => {
 
   useEffect(() => {
     (async () => {
-      const {
-        data: { data },
-      } = await getAllEmployees();
-      console.log(data);
-      setEmps(data);
+      try {
+        const {
+          data: { data },
+        } = await getAllEmployees();
+        console.log(data);
+        setEmps(data);
+      } catch (error) {
+        sendError(dispatch, error);
+      }
     })();
   }, [dispatch, fetchAgain]);
 
@@ -88,7 +92,7 @@ const MyEmployees = () => {
 
   return (
     <Navbar>
-      <PageHeader searchLabel="Search Employees"  btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
+      <PageHeader searchLabel="Search Employees" btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>
