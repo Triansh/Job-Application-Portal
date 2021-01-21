@@ -9,8 +9,8 @@ const userSlice = createSlice({
       return { ...state, role };
     },
     setLogin(state, action) {
-      const { isLogin } = action.payload;
-      return { ...state, isLogin };
+      const { isLoggedIn } = action.payload;
+      return { ...state, isLoggedIn };
     },
   },
 });

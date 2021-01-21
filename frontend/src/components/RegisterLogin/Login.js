@@ -5,14 +5,12 @@ import { useHistory } from 'react-router';
 import { Avatar, Box, Grid, Link, Container, Button, Typography, CssBaseline } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import { setStatus } from '../../features/statusSlice';
-import { setRole } from '../../features/userSlice';
 import { loginUser, setHeaders } from '../../api/userRequests';
 
 import Input from '../Controls/Input';
 import useStyles from './styles';
 import Copyright from './Copyright';
-import { sendError } from '../../utils/utils';
+import { sendError, signIn } from '../../utils/utils';
 
 export default function SignIn() {
   const classes = useStyles();
@@ -34,9 +32,8 @@ export default function SignIn() {
       const { data } = await loginUser(user);
       const { token, status } = data;
       if (status === 'success') setHeaders(token);
+      signIn(dispatch, data.user.role, 'You are successfully Logged In');
       history.push('/');
-      dispatch(setRole({ role: data.user.role }));
-      dispatch(setStatus({ status, message: 'Login successful' }));
     } catch (error) {
       sendError(dispatch, error);
     }

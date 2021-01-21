@@ -4,6 +4,7 @@ import { Card, Grid, TextField, CardContent, IconButton, CardHeader } from '@mat
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const EducationItem = ({ edu, setEdu, index }) => {
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     const newList = [...edu];

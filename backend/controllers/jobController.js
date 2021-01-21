@@ -5,6 +5,7 @@ const BasicFilter = require('../utils/BasicFilter');
 const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const jobStatusHandler = require('../utils/jobStatusHandler');
+const { APPLICATION_STATUS } = require('../utils/constants');
 
 // ---------------------------------------------------------------- DEBUGGING
 // -------------------------------------------------------------------
@@ -36,11 +37,26 @@ const getMyActiveJobs = handleAsync(async (req, res, next) => {
 
 	const jobs = await filteredJobs.query
 		.populate('noOfApplicants')
-		.select('title createdAt positions applications deadline');
+		.select('title createdAt positions applications deadline')
+		.lean();
+
+	for (let i = 0; i < jobs.length; i++) {
+		const recruitmentsMade = await Application.countDocuments({
+			job: jobs[i]._id,
+			status: APPLICATION_STATUS.ACCEPTED,
+		});
+
+		jobs[i] = {
+			...jobs[i],
+			remainingPositions: Math.max(0, jobs[i].positions - recruitmentsMade),
+		};
+	}
+
+	const activeJobs = jobs.filter((job) => job.remainingPositions !== 0);
 
 	res.status(200).json({
 		status: 'success',
-		data: jobs,
+		data: activeJobs,
 	});
 });
 
@@ -57,8 +73,7 @@ const createJob = handleAsync(async (req, res, next) => {
 // This updates a job by recruiter
 const updateJob = handleAsync(async (req, res, next) => {
 	let job = await Job.findById(req.params.id);
-	if (!job)
-		return next(new AppError('No such job exists. Update failed.', 404));
+	if (!job) return next(new AppError('No such job exists. Update failed.', 404));
 	if (job.recruiter.toString() !== req.user._id.toString())
 		return next(new AppError('Permission denied for this action', 403));
 
@@ -88,8 +103,7 @@ const updateJob = handleAsync(async (req, res, next) => {
 // This deletes a job with their respective applications by recruiter
 const deleteJob = handleAsync(async (req, res, next) => {
 	let job = await Job.findById(req.params.id);
-	if (!job)
-		return next(new AppError('No such job exists. Delete failed.', 404));
+	if (!job) return next(new AppError('No such job exists. Delete failed.', 404));
 	if (job.recruiter.toString() !== req.user._id.toString())
 		return next(new AppError('Permission denied for this action', 403));
 

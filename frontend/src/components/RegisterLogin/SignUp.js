@@ -6,14 +6,13 @@ import { Avatar, Box, Grid, Link, Container, Button, Typography, CssBaseline } f
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { registerUser, setHeaders } from '../../api/userRequests';
-import { setStatus } from '../../features/statusSlice';
-import { setRole } from '../../features/userSlice';
 
 import { TextInput } from '../Controls/Input';
 import Dropmenu from '../Controls/Dropmenu';
 import useStyles from './styles';
 import Copyright from './Copyright';
 import ExtraFields from './ExtraFields';
+import { sendError, signIn } from '../../utils/utils';
 
 export default function SignUp() {
   const classes = useStyles();
@@ -42,12 +41,10 @@ export default function SignUp() {
       const { data } = await registerUser({ ...user, skills: allSkills, education: edu });
       const { token, status } = data;
       if (status === 'success') setHeaders(token);
+      signIn(dispatch, data.user.role, 'You have successfully registered');
       history.push('/');
-      dispatch(setRole({ role: data.user.role }));
-      dispatch(setStatus({ status, message: 'Registration successful' }));
     } catch (error) {
-      const { message } = error.response.data;
-      dispatch(setStatus({ status: 'error', message }));
+      sendError(dispatch, error);
     }
   };
 

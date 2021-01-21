@@ -7,6 +7,7 @@ import { Avatar, Grid, Container, Button, Typography, CssBaseline } from '@mater
 import avatarImg from '../../assets/avatar.svg';
 
 import { getUserData, updateUser } from '../../api/userRequests';
+
 import { setStatus } from '../../features/statusSlice';
 
 import TextInput from '../Controls/Input';
