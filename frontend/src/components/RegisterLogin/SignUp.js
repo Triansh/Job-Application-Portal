@@ -7,12 +7,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { registerUser, setHeaders } from '../../api/userRequests';
 
-import { TextInput } from '../Controls/Input';
+import { sendError, signIn } from '../../utils/utils';
+
+import { PlainInput } from '../Controls/Input';
 import Dropmenu from '../Controls/Dropmenu';
+
 import useStyles from './styles';
 import Copyright from './Copyright';
 import ExtraFields from './ExtraFields';
-import { sendError, signIn } from '../../utils/utils';
 
 export default function SignUp() {
   const classes = useStyles();
@@ -65,10 +67,18 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <TextInput id="fullName" label="Full Name" name="name" autoComplete="fname" value={user.name} onChange={handleChange} />
-            <TextInput id="email" label="Email Address" name="email" type="email" autoComplete="email" value={user.email} onChange={handleChange} />
-            <TextInput id="password" label="Password" name="password" type="password" autoComplete="current-password" value={user.password} onChange={handleChange} />
-            <Dropmenu id="role" label="Role" name="role" value={user.role} onChange={handleChange} options={roleOptions} />
+            <Grid item xs={12}>
+              <PlainInput fullWidth label="Full Name" name="name" value={user.name} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <PlainInput fullWidth label="Email Address" name="email" type="email" value={user.email} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <PlainInput fullWidth label="Password" name="password" type="password" value={user.password} onChange={handleChange} />
+            </Grid>
+            <Grid item xs>
+              <Dropmenu id="role" label="Role" name="role" value={user.role} onChange={handleChange} options={roleOptions} />
+            </Grid>
             <ExtraFields user={user} edu={edu} setEdu={setEdu} handleChange={handleChange} />
           </Grid>
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={(e) => handleSubmit(e)}>

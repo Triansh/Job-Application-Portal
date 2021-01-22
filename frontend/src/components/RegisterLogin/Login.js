@@ -7,10 +7,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { loginUser, setHeaders } from '../../api/userRequests';
 
-import Input from '../Controls/Input';
+import { sendError, signIn } from '../../utils/utils';
+
+import { PlainInput } from '../Controls/Input';
+
 import useStyles from './styles';
 import Copyright from './Copyright';
-import { sendError, signIn } from '../../utils/utils';
 
 export default function SignIn() {
   const classes = useStyles();
@@ -51,19 +53,17 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Input id="email" label="Email Address" name="email" type="email" autoComplete="email" autoFocus value={user.email} onChange={handleChange} />
-            <Input id="password" label="Password" name="password" type="password" autoComplete="current-password" value={user.password} onChange={handleChange} />
+            <Grid item xs={12}>
+              <PlainInput fullWidth label="Email Address" name="email" type="email" value={user.email} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <PlainInput fullWidth label="Password" name="password" type="password" value={user.password} onChange={handleChange} />
+            </Grid>
           </Grid>
-          {/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
           <Button type="submit" onClick={(e) => handleSubmit(e)} fullWidth variant="contained" color="primary" className={classes.submit}>
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}

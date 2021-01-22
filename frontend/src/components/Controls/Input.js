@@ -4,13 +4,7 @@ import { Grid, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment
 
 import SearchIcon from '@material-ui/icons/Search';
 
-export const TextInput = ({ sm, type, id, label, name, autoComplete, value, onChange }) => {
-  return (
-    <Grid item xs={12} sm={sm || 12}>
-      <TextField variant="outlined" fullWidth id={id} label={label} type={type || 'text'} name={name} autoComplete={autoComplete} value={value} onChange={(e) => onChange(e)} />
-    </Grid>
-  );
-};
+
 
 export const TextArea = ({ rows, label, name, value, onChange, ...rest }) => {
   return <TextField multiline rows={rows} variant="outlined" fullWidth label={label} name={name} value={value} onChange={(e) => onChange(e)} {...rest} />;
@@ -47,4 +41,3 @@ export const PlainInput = ({ name, label, value, onChange, ...rest }) => {
   return <TextField variant="outlined" label={label} name={name} value={value} onChange={onChange} {...rest} />;
 };
 
-export default TextInput;

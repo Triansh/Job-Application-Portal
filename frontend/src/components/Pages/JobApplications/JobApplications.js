@@ -22,6 +22,8 @@ import PageHeader from '../../Table/PageHeader';
 import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
+import DisplayEducation from '../../Education/DisplayEducation';
+
 import Button from '../../Controls/Button';
 import RatingStars from '../../Controls/RatingStars';
 import DialogBox from '../../Controls/DialogBox';
@@ -82,25 +84,6 @@ const JobApplications = () => {
     } catch (error) {
       sendError(dispatch, error);
     }
-  };
-
-  const DisplayEducation = ({ educationList }) => {
-    return (
-      <Grid container spacing={1}>
-        {educationList.map(({ institution, startYear, endYear, _id }) => {
-          return (
-            <Grid item xs={12} key={_id}>
-              <Typography variant="body2">
-                <strong>Institution: </strong> {institution}
-              </Typography>
-              <Typography variant="body2">
-                <strong>Period: </strong> {startYear} - {endYear ? endYear : 'Present'}
-              </Typography>
-            </Grid>
-          );
-        })}
-      </Grid>
-    );
   };
 
   const ActionIcons = ({ item: { _id, status } }) => {

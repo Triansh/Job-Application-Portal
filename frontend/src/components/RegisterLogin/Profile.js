@@ -10,8 +10,10 @@ import { getUserData, updateUser } from '../../api/userRequests';
 
 import { setStatus } from '../../features/statusSlice';
 
-import TextInput from '../Controls/Input';
 import Navbar from '../Navbar/Navbar';
+
+import { PlainInput } from '../Controls/Input';
+
 import ExtraFields from './ExtraFields';
 import useStyles from './styles';
 
@@ -75,7 +77,9 @@ const Profile = () => {
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-              <TextInput id="fullName" label="Full Name" name="name" autoComplete="fname" value={user.name} onChange={handleChange} />
+              <Grid item xs={12}>
+                <PlainInput fullWidth label="Full Name" name="name" value={user.name} onChange={handleChange} />
+              </Grid>
               <ExtraFields userSkills={userSkills.current} user={user} edu={edu} setEdu={setEdu} handleChange={handleChange} />
             </Grid>
             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={(e) => handleSubmit(e)}>
