@@ -76,6 +76,7 @@ const Layout = () => {
   const onFilterClick = () => setFetchAgain(!fetchAgain);
 
   const ActionIcons = ({ item }) => {
+    // console.log(item)
     if (item.status === 'Full') return <Button style={{ border: '2px solid 	#BF00FF', borderRadius: '50px', color: '		#7851A9' }} text="Full" size="medium" variant="outlined" startIcon={<AssignmentTurnedInIcon />} />;
 
     const exist = item.allApplications;

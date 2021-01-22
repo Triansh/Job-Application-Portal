@@ -18,10 +18,7 @@ exports.getApplication = handleAsync(async (req, res, next) => {
 	});
 });
 exports.getAllApplications = handleAsync(async (req, res, next) => {
-	const filteredApplications = new BasicFilter(
-		Application.find(),
-		req.query
-	).filter();
+	const filteredApplications = new BasicFilter(Application.find(), req.query).filter();
 
 	const apps = await filteredApplications.query;
 	res.status(200).json({
@@ -33,43 +30,28 @@ exports.getAllApplications = handleAsync(async (req, res, next) => {
 
 // This is for creating application for a job by applicant
 exports.createApplication = handleAsync(async (req, res, next) => {
-	const job = await Job.findById(req.params.id);
+	const job = await Job.findById(req.params.id).populate({
+		path: 'allApplications',
+		match: { applicant: req.user._id },
+	});
+
 	if (!job) return next(new AppError('No such job exists', 404));
 
-	if (job.status === JOB_STATUS.FULL)
-		return next(
-			new AppError('No more applications are being accepted', 403)
-		);
+	if (new Date(job.deadline) <= Date.now())
+		return next(new AppError('Deadline for this application has passed', 400));
 
-	const totalPositionsAlloted = await Application.countDocuments({
-		job: req.params.id,
+	if (job.status === JOB_STATUS.FULL)
+		return next(new AppError('No more applications are being accepted', 400));
+
+	if (job.allApplications.length > 0)
+		return next(new AppError('You have already registered for this job', 400));
+
+	isAccepted = await Application.countDocuments({
+		applicant: req.user._id,
 		status: APPLICATION_STATUS.ACCEPTED,
 	});
-	if (totalPositionsAlloted >= job.positions)
-		return next(
-			new AppError(
-				'All recruitments are already made.\nUnsuccessful Attempt.',
-				403
-			)
-		);
 
-	if (new Date(job.deadline) <= Date.now())
-		return next(
-			new AppError('Deadline for this application has passed', 400)
-		);
-
-	if (
-		await Application.countDocuments({
-			applicant: req.user._id,
-			$or: [
-				{ job: req.params.id },
-				{ status: APPLICATION_STATUS.ACCEPTED },
-			],
-		})
-	)
-		return next(
-			new AppError('You are not eligible to apply for this job.', 400)
-		);
+	if (isAccepted) return next(new AppError('You are already accepted into another job.', 400));
 
 	const app = await Application.create({
 		job: req.params.id,
@@ -77,6 +59,9 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 		sop: req.body.sop,
 		recruiter: job.recruiter,
 	});
+
+	await jobStatusHandler(req.params.id);
+
 	res.status(201).json({
 		status: 'success',
 		data: { app },
@@ -183,7 +168,6 @@ exports.checkOpenApplications = handleAsync(async (req, res, next) => {
 		applicant: req.user._id,
 	});
 
-	if (len >= 10)
-		return next(new AppError('There are already 10 open applications.'));
+	if (len >= 10) return next(new AppError('There are already 10 open applications.'));
 	next();
 });

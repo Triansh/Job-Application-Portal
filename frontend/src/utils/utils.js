@@ -12,6 +12,7 @@ export const sendError = (dispatch, error) => {
   console.log(error);
   console.log(error.response.data);
   const { message } = error.response.data;
+  console.log(message)
   dispatch(setStatus({ status: 'error', message: message || 'Oops! Something went wrong' }));
 };
 

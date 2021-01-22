@@ -63,7 +63,7 @@ export default function SignIn() {
           <Button type="submit" onClick={(e) => handleSubmit(e)} fullWidth variant="contained" color="primary" className={classes.submit}>
             Sign In
           </Button>
-          <Grid container>
+          <Grid container justify="flex-end">
             <Grid item>
               <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
@@ -72,7 +72,7 @@ export default function SignIn() {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      <Box mt={5}>
         <Copyright />
       </Box>
     </Container>
