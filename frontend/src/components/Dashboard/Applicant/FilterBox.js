@@ -51,10 +51,10 @@ const FilterBox = ({ filter, setFilter, onFilterClick }) => {
           <Dropmenu name="duration" value={filter.duration} label="Duration" options={durationOptions} onChange={(e) => handleChange(e)} />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <PlainInput name="minSalary" value={filter.minSalary} label="Minimum salary" onChange={(e) => handleChange(e)} />
+          <PlainInput name="minSalary" value={filter.minSalary} label="Min salary" onChange={(e) => handleChange(e)} />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <PlainInput name="maxSalary" value={filter.maxSalary} label="Maximum salary" onChange={(e) => handleChange(e)} />
+          <PlainInput name="maxSalary" value={filter.maxSalary} label="Max salary" onChange={(e) => handleChange(e)} />
         </Grid>
       </Grid>
     </Container>

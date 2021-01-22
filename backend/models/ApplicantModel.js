@@ -19,7 +19,7 @@ const applicantSchema = new mongoose.Schema(
 						validator: function (v) {
 							return isYear(v);
 						},
-						message: 'Must be a valid year',
+						message: `Must be a valid from 1900-${new Date().getFullYear()}`,
 					},
 				},
 				endYear: {
@@ -28,8 +28,7 @@ const applicantSchema = new mongoose.Schema(
 						validator: function (v) {
 							return v ? isYear(v) && this.startYear <= v : true;
 						},
-						message:
-							'Must be a valid year and should be less than start year',
+						message: 'Must be a valid year and should be less than end year',
 					},
 				},
 			},
@@ -63,8 +62,7 @@ applicantSchema.virtual('avgRating').get(function () {
 	const { review } = this;
 	if (!review || !review.length) return 0;
 
-	const avgRating =
-		review.reduce((prev, { rating }) => prev + rating, 0) / review.length;
+	const avgRating = review.reduce((prev, { rating }) => prev + rating, 0) / review.length;
 	return Math.round(avgRating * 10) / 10;
 });
 

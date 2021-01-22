@@ -54,9 +54,10 @@ const Profile = () => {
       .filter((s) => s);
 
     const allSkills = [...new Set([...user.skills, ...moreSkills])];
+    const allEdu = edu.filter(({ institution, startYear, endYear }) => institution || startYear || endYear);
 
     try {
-      const { data } = await updateUser({ ...user, skills: allSkills, education: edu });
+      const { data } = await updateUser({ ...user, skills: allSkills, education: allEdu });
       console.log(data);
       history.push('/');
       dispatch(setStatus({ status: 'success', message: 'Update successful' }));

@@ -62,6 +62,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 
 	await jobStatusHandler(req.params.id);
 
+	console.log("THis is just passed")
 	res.status(201).json({
 		status: 'success',
 		data: { app },

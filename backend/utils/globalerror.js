@@ -31,7 +31,7 @@ module.exports = (err, req, res, next) => {
 	let error = new AppError(err.message, err.statusCode);
 
 	if (err.code === 11000) error = handleDuplicationErrors(err);
-	if (err._message && err._message.includes('validation')) error = handleValidationErrors(err);
+	if (err._message && err._message.toLowerCase().includes('validation')) error = handleValidationErrors(err);
 	if (err.name === 'JsonWebTokenError') error = handleJWTError(err);
 
 	if (!error.message) error.message = 'Oops! Something went wrong';

@@ -1,3 +1,4 @@
+const Job = require('../models/JobModel');
 const { APPLICATION_STATUS, JOB_STATUS } = require('./constants');
 const AppError = require('./AppError');
 
@@ -12,8 +13,8 @@ const jobStatusHandler = async (jobId) => {
 
 		options = { runValidators: true, new: true };
 
-		const { noOfApplicants, positions, applications, allApplications } = job;
-		totalAccepted = allApplications.length;
+		const { noOfApplicants, positions, applications, allApplications, status } = job;
+		const totalAccepted = allApplications.length;
 
 		console.log(noOfApplicants, applications, totalAccepted, positions);
 
@@ -24,9 +25,11 @@ const jobStatusHandler = async (jobId) => {
 		} else if (status === JOB_STATUS.FULL) {
 			job = await Job.findByIdAndUpdate(jobId, { status: JOB_STATUS.AVAILABLE }, options);
 		}
+		console.log('Got SUCCESSFUL');
 
-		return { status: 'success', data: { job } };
+		return { status: 'success', data: job };
 	} catch (error) {
+		console.log(error);
 		return new AppError('Something went terribly wrong...', 500);
 	}
 };

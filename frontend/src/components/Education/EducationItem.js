@@ -4,7 +4,6 @@ import { Card, Grid, TextField, CardContent, IconButton, CardHeader } from '@mat
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const EducationItem = ({ edu, setEdu, index }) => {
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     const newList = [...edu];
@@ -24,7 +23,7 @@ const EducationItem = ({ edu, setEdu, index }) => {
       <Card>
         <CardHeader
           disableTypography={true}
-          title={<TextField fullWidth id="institution" label="Name of Institution" name="institution" onChange={(e) => handleChange(e)} value={edu[index].institution}/>}
+          title={<TextField fullWidth label="Name of Institution" name="institution" onChange={(e) => handleChange(e)} value={edu[index].institution} />}
           onChange={(e) => handleChange(e)}
           action={
             <IconButton onClick={(e) => deleteItem(index)}>
@@ -35,10 +34,10 @@ const EducationItem = ({ edu, setEdu, index }) => {
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth id="startYear" label="Start Year" name="startYear" onChange={(e) => handleChange(e)} value={edu[index].startYear} />
+              <TextField fullWidth label="Start Year" name="startYear" onChange={(e) => handleChange(e)} value={edu[index].startYear} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth id="endYear" label="End Year" name="endYear" onChange={(e) => handleChange(e)} value={edu[index].endYear} />
+              <TextField fullWidth label="End Year" name="endYear" onChange={(e) => handleChange(e)} value={edu[index].endYear} />
             </Grid>
           </Grid>
         </CardContent>

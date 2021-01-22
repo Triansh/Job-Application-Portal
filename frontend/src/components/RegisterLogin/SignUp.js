@@ -38,9 +38,10 @@ export default function SignUp() {
       .filter((s) => s);
 
     const allSkills = [...new Set([...user.skills, ...moreSkills])];
+    const allEdu = edu.filter(({ institution, startYear, endYear }) => institution || startYear || endYear);
 
     try {
-      const { data } = await registerUser({ ...user, skills: allSkills, education: edu });
+      const { data } = await registerUser({ ...user, skills: allSkills, education: allEdu });
       const { token, status } = data;
       if (status === 'success') setHeaders(token);
       signIn(dispatch, data.user.role, 'You have successfully registered');
