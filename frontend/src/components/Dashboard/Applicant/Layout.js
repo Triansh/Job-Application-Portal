@@ -39,7 +39,7 @@ const Layout = () => {
     { label: 'Salary', id: 'salary' },
     { label: 'Duration', id: 'duration' },
     { label: 'Deadline', id: 'deadline' },
-    { label: 'Rating', id: 'avgRating' },
+    { label: 'Job Rating', id: 'avgRating' },
   ];
 
   useEffect(() => {

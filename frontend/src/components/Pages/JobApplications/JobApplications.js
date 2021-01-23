@@ -39,7 +39,7 @@ const JobApplications = () => {
 
   const heads = [
     { label: 'Name', id: 'applicant.name' },
-    { label: 'skills', id: 'applicant.skills', nested: true },
+    { label: 'Skills', id: 'applicant.skills', nested: true },
     { label: 'Date of Application', id: 'createdAt' },
     { label: 'Education', id: 'applicant.education' },
     { label: 'SOP', id: 'sop' },
@@ -92,7 +92,7 @@ const JobApplications = () => {
 
   return (
     <Navbar>
-      <PageHeader btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
+      <PageHeader searchLabel="Search Applicants" btnDisable setSearchTerm={setSearchTerm} value={searchTerm}>
         <Table>
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>

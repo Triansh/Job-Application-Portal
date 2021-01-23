@@ -79,7 +79,7 @@ const NewJobForm = ({ setOpenPopup, fetchAgain, setFetchAgain, ...rest }) => {
           <PlainInput label="Positions" name="positions" value={job.positions} onChange={handleChange} />
           <Dropmenu name="duration" label="Duration" value={job.duration} onChange={handleChange} options={durationOptions} />
           <PlainInput name="salary" label="Salary" value={job.salary} onChange={handleChange} />
-          <DateTimeInput name="deadline" label="Deadline" value={(new Date(job.deadline).toLocaleDateString())} onChange={handleChange} />
+          <DateTimeInput name="deadline" label="Deadline" value={job.deadline} onChange={handleChange} />
         </Grid>
         <Grid item xs={6}>
           <RadioButtons name="type" label="Type of Job" value={job.type} onChange={handleChange} options={jobTypeOptions} />

@@ -1,4 +1,5 @@
 const Job = require('../models/JobModel');
+const Application = require('../models/ApplicationModel');
 const { APPLICATION_STATUS, JOB_STATUS } = require('./constants');
 const AppError = require('./AppError');
 
@@ -21,6 +22,15 @@ const jobStatusHandler = async (jobId) => {
 		if (noOfApplicants >= applications || totalAccepted >= positions) {
 			if (status === JOB_STATUS.AVAILABLE) {
 				job = await Job.findByIdAndUpdate(jobId, { status: JOB_STATUS.FULL }, options);
+				if (totalAccepted >= positions)
+					await Application.updateMany(
+						{
+							job: jobId,
+							status: { $ne: APPLICATION_STATUS.ACCEPTED },
+						},
+						{ status: APPLICATION_STATUS.REJECTED },
+						options
+					);
 			}
 		} else if (status === JOB_STATUS.FULL) {
 			job = await Job.findByIdAndUpdate(jobId, { status: JOB_STATUS.AVAILABLE }, options);

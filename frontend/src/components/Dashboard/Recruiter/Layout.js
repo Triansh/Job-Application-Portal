@@ -99,10 +99,10 @@ const Layout = () => {
                   <TableCell align="center">{remainingPositions}</TableCell>
                   <TableCell align="center">{new Date(deadline).toGMTString()}</TableCell>
                   <TableCell align="center">
-                    <IconButton onClick={() => onEditIconClick(item)}>
+                    <IconButton color="primary" onClick={() => onEditIconClick(item)}>
                       <CreateIcon />
                     </IconButton>
-                    <IconButton onClick={() => setDeleteDialog({ isOpen: true, onConfirm: () => onDelete(_id) })}>
+                    <IconButton color="secondary" onClick={() => setDeleteDialog({ isOpen: true, onConfirm: () => onDelete(_id) })}>
                       <DeleteForeverIcon />
                     </IconButton>
                   </TableCell>
