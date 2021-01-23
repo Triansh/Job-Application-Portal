@@ -2,12 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { TableBody, TableCell, TableRow } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import LoopIcon from '@material-ui/icons/Loop';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import SmsIcon from '@material-ui/icons/Sms';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 import { getApplicantJobs } from '../../../api/jobRequests';
 
@@ -18,11 +12,13 @@ import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
 import { sendError, sort } from '../../../utils/utils';
+
 import Popup from '../../Controls/Popup';
-import Button from '../../Controls/Button';
+import RatingStars from '../../Controls/RatingStars';
+
+import JobStatusButtons from '../../Status/JobStatus';
 
 import ApplyForm from './ApplyForm';
-import RatingStars from '../../Controls/RatingStars';
 
 const Layout = () => {
   const [jobs, setJobs] = useState([]);
@@ -75,18 +71,6 @@ const Layout = () => {
 
   const onFilterClick = () => setFetchAgain(!fetchAgain);
 
-  const ActionIcons = ({ item }) => {
-    // console.log(item)
-    if (item.status === 'Full') return <Button style={{ border: '2px solid 	#BF00FF', borderRadius: '50px', color: '		#7851A9' }} text="Full" size="medium" variant="outlined" startIcon={<AssignmentTurnedInIcon />} />;
-
-    const exist = item.allApplications;
-    if (!exist.length) return <Button onClick={() => onApplyClick(item)} style={{ border: '2px solid #1F75FE', borderRadius: '50px', color: '	#0000CD' }} text="Apply Now" size="medium" variant="outlined" startIcon={<ErrorOutlineIcon />} />;
-    else if (exist[0].status === 'Accepted') return <Button disabled style={{ border: '2px solid #50C878', borderRadius: '50px', color: '#008080' }} text="Accepted" size="medium" variant="outlined" startIcon={<CheckIcon />} />;
-    else if (exist[0].status === 'Rejected') return <Button disabled style={{ border: '2px solid #ED2939', borderRadius: '50px', color: '#960018' }} text="Rejected" size="medium" variant="outlined" startIcon={<CloseIcon />} />;
-    else if (exist[0].status === 'Shortlisted') return <Button disabled style={{ border: '2px solid 	#FF7F50', borderRadius: '50px', color: '	#FF4F00' }} text="Rejected" size="medium" variant="outlined" startIcon={<SmsIcon />} />;
-    else return <Button disabled style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#DAA520' }} text={exist[0].status} size="medium" variant="outlined" startIcon={<LoopIcon />} />;
-  };
-
   return (
     <Navbar>
       <PageHeader onFilterClick={onFilterClick} btnDisable setSearchTerm={setSearchTerm} value={searchTerm} filter={filter} setFilter={setFilter}>
@@ -107,7 +91,7 @@ const Layout = () => {
                   <RatingStars readOnly precision={0.5} value={item.avgRating} />
                 </TableCell>
                 <TableCell align="center">
-                  <ActionIcons item={item} />
+                  <JobStatusButtons job={item} onClick={() => onApplyClick(item)} />
                 </TableCell>
               </TableRow>
             ))}

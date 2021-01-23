@@ -4,8 +4,6 @@ import { Grid, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment
 
 import SearchIcon from '@material-ui/icons/Search';
 
-
-
 export const TextArea = ({ rows, label, name, value, onChange, ...rest }) => {
   return <TextField multiline rows={rows} variant="outlined" fullWidth label={label} name={name} value={value} onChange={(e) => onChange(e)} {...rest} />;
 };
@@ -40,4 +38,3 @@ export const TextInputWithIcon = ({ id, label, value, onChange }) => {
 export const PlainInput = ({ name, label, value, onChange, ...rest }) => {
   return <TextField variant="outlined" label={label} name={name} value={value} onChange={onChange} {...rest} />;
 };
-

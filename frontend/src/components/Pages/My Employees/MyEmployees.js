@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { TableBody, TableCell, TableRow } from '@material-ui/core';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import GradeIcon from '@material-ui/icons/Grade';
 
 import { getAllEmployees } from '../../../api/applicationRequests';
 import { rateEmployee } from '../../../api/ratingRequests';
@@ -17,8 +15,9 @@ import TableHead from '../../Table/TableHead';
 import Table from '../../Table/Table';
 
 import Popup from '../../Controls/Popup';
-import Button from '../../Controls/Button';
 import RatingStars from '../../Controls/RatingStars';
+
+import RateButtons from '../../Status/RateStatus';
 
 import RateForm from '../RateForm';
 
@@ -75,19 +74,7 @@ const MyEmployees = () => {
     const ratingExists = review.filter(({ rater }) => rater === userId);
     const hasRated = !ratingExists || !ratingExists.length ? false : true;
 
-    if (hasRated) return <Button disabled style={{ border: '2px solid 	#03C03C', borderRadius: '50px', color: '	#1F75FE' }} text="Rated" size="medium" variant="outlined" endIcon={<ThumbUpIcon />} />;
-    else
-      return (
-        <Button
-          disabled={item.status !== 'Accepted'}
-          onClick={() => onRateClick(item.applicant)}
-          style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#0000CD' }}
-          text="Rate Now"
-          size="medium"
-          variant="outlined"
-          startIcon={<GradeIcon />}
-        />
-      );
+    return <RateButtons status="Accepted" hasRated={hasRated} onClick={() => onRateClick(item.applicant)} />;
   };
 
   return (

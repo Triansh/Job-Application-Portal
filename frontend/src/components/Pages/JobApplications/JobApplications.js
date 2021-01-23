@@ -4,11 +4,6 @@ import { useParams } from 'react-router';
 
 import { TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import LoopIcon from '@material-ui/icons/Loop';
-import SmsIcon from '@material-ui/icons/Sms';
-
 import { getJobApplications } from '../../../api/jobRequests';
 import { updateApplicationStatus } from '../../../api/applicationRequests';
 
@@ -24,9 +19,10 @@ import Table from '../../Table/Table';
 
 import DisplayEducation from '../../Education/DisplayEducation';
 
-import Button from '../../Controls/Button';
 import RatingStars from '../../Controls/RatingStars';
 import DialogBox from '../../Controls/DialogBox';
+
+import { ApplicationStatusButtons, ApplicationStatusUpdateButtons } from '../../Status/ApplicationStatus';
 
 const JobApplications = () => {
   const [apps, setApps] = useState([]);
@@ -86,57 +82,12 @@ const JobApplications = () => {
     }
   };
 
-  const ActionIcons = ({ item: { _id, status } }) => {
-    if (status === 'Shortlisted')
-      return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Button
-            onClick={() => setAcceptDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Accepted' }, _id) })}
-            style={{ border: '2px solid #50C878', borderRadius: '50px', color: '#008080' }}
-            text="Accept"
-            size="medium"
-            variant="outlined"
-            startIcon={<CheckIcon />}
-          />
-          <Button
-            onClick={() => setRejectDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Rejected' }, _id) })}
-            style={{ border: '2px solid #ED2939', borderRadius: '50px', color: '#960018' }}
-            text="Reject"
-            size="medium"
-            variant="outlined"
-            startIcon={<CloseIcon />}
-          />
-        </div>
-      );
-    else if (status === 'Applied')
-      return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Button
-            onClick={() => setShortlistDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Shortlisted' }, _id) })}
-            style={{ border: '2px solid 	#FF7F50', borderRadius: '50px', color: '	#FF4F00' }}
-            text="Shortlist"
-            size="medium"
-            variant="outlined"
-            startIcon={<SmsIcon />}
-          />
-          <Button
-            onClick={() => setRejectDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Rejected' }, _id) })}
-            style={{ border: '2px solid #ED2939', borderRadius: '50px', color: '#960018' }}
-            text="Reject"
-            size="medium"
-            variant="outlined"
-            startIcon={<CloseIcon />}
-          />
-        </div>
-      );
-    else return <></>;
-  };
+  const UpdateStatusActionButtons = ({ item: { _id, status } }) => {
+    const acceptOnClick = () => setAcceptDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Accepted' }, _id) });
+    const rejectOnClick = () => setRejectDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Rejected' }, _id) });
+    const shortlistOnClick = () => setShortlistDialog({ isOpen: true, onConfirm: () => handleStatusChange({ status: 'Shortlisted' }, _id) });
 
-  const StatusIcons = ({ item }) => {
-    if (item.status === 'Accepted') return <Button disabled style={{ border: '2px solid #50C878', borderRadius: '50px', color: '#008080' }} text="Accepted" size="medium" variant="outlined" startIcon={<CheckIcon />} />;
-    else if (item.status === 'Rejected') return <Button disabled style={{ border: '2px solid #ED2939', borderRadius: '50px', color: '#960018' }} text="Rejected" size="medium" variant="outlined" startIcon={<CloseIcon />} />;
-    else if (item.status === 'Shortlisted') return <Button disabled style={{ border: '2px solid 	#FF7F50', borderRadius: '50px', color: '	#FF4F00' }} text="Shortlisted" size="medium" variant="outlined" startIcon={<SmsIcon />} />;
-    else return <Button disabled style={{ border: '2px solid #FFEF00', borderRadius: '50px', color: '#DAA520' }} text={item.status} size="medium" variant="outlined" startIcon={<LoopIcon />} />;
+    return <ApplicationStatusUpdateButtons status={status} acceptOnClick={acceptOnClick} rejectOnClick={rejectOnClick} shortlistOnClick={shortlistOnClick} />;
   };
 
   return (
@@ -158,31 +109,19 @@ const JobApplications = () => {
                   <RatingStars readOnly precision={0.5} value={item.applicant.avgRating} />
                 </TableCell>
                 <TableCell align="center">
-                  <StatusIcons item={item} />
+                  <ApplicationStatusButtons status={item.status} />
                 </TableCell>
                 <TableCell align="center">
-                  <ActionIcons item={item} />
+                  <UpdateStatusActionButtons item={item} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </PageHeader>
-      <DialogBox action="Accept" title="Accept Applicant" confirmDialog={acceptDialog} setConfirmDialog={setAcceptDialog}>
-        <Typography variant="body1">
-          Are you sure, you want to <b>Accept</b> this applicant?
-        </Typography>
-      </DialogBox>
-      <DialogBox action="Shortlist" title="Shortlist Applicant" confirmDialog={shortlistDialog} setConfirmDialog={setShortlistDialog}>
-        <Typography variant="body1">
-          Are you sure, you want to <b>Shortlist</b> this applicant?
-        </Typography>
-      </DialogBox>
-      <DialogBox action="Reject" title="Reject Applicant" confirmDialog={rejectDialog} setConfirmDialog={setRejectDialog}>
-        <Typography variant="body1">
-          Are you sure, you want to <b>Reject</b> this applicant?
-        </Typography>
-      </DialogBox>
+      <DialogBox action="Accept" confirmDialog={acceptDialog} setConfirmDialog={setAcceptDialog} />
+      <DialogBox action="Shortlist" confirmDialog={shortlistDialog} setConfirmDialog={setShortlistDialog} />
+      <DialogBox action="Reject" confirmDialog={rejectDialog} setConfirmDialog={setRejectDialog} />
     </Navbar>
   );
 };

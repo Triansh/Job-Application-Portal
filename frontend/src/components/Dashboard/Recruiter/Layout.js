@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { TableBody, TableRow, TableCell, Typography, IconButton } from '@material-ui/core';
+import { TableBody, TableRow, TableCell, IconButton } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -116,9 +116,7 @@ const Layout = () => {
       <Popup title="Update Job" openPopup={updatePopup} setOpenPopup={setUpdatePopup}>
         <UpdateJobForm jobToEdit={jobToEdit} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} setOpenPopup={setUpdatePopup} />
       </Popup>
-      <DialogBox action="delete" title="Delete Job" confirmDialog={deleteDialog} setConfirmDialog={setDeleteDialog}>
-        <Typography variant="body1">Are you sure, you want to delete this job?</Typography>
-      </DialogBox>
+      <DialogBox action="Delete" confirmDialog={deleteDialog} setConfirmDialog={setDeleteDialog} item="Job" />
     </Navbar>
   );
 };
