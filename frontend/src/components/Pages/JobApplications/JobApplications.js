@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { TableBody, TableCell, TableRow } from '@material-ui/core';
 
 import { getJobApplications } from '../../../api/jobRequests';
 import { updateApplicationStatus } from '../../../api/applicationRequests';

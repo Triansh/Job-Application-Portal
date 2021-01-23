@@ -40,6 +40,7 @@ const Layout = () => {
     { label: 'Date of Posting', id: 'createdAt' },
     { label: 'Number of Applicants', id: 'noOfApplicants' },
     { label: 'Remaining Positions', id: 'remainingPositions' },
+    { label: 'Deadline', id: 'deadline' },
   ];
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const Layout = () => {
           <TableHead heads={heads} sortBy={sortBy} setSortBy={setSortBy} />
           <TableBody>
             {searchJobs.map((item) => {
-              const { _id, title, createdAt, noOfApplicants, remainingPositions } = item;
+              const { _id, title, createdAt, noOfApplicants, remainingPositions, deadline } = item;
               return (
                 <TableRow key={_id}>
                   <TableCell align="center" to={`/jobs/${_id}`} component={Link}>
@@ -96,6 +97,7 @@ const Layout = () => {
                   <TableCell align="center">{new Date(createdAt).toDateString()}</TableCell>
                   <TableCell align="center">{noOfApplicants}</TableCell>
                   <TableCell align="center">{remainingPositions}</TableCell>
+                  <TableCell align="center">{new Date(deadline).toGMTString()}</TableCell>
                   <TableCell align="center">
                     <IconButton onClick={() => onEditIconClick(item)}>
                       <CreateIcon />

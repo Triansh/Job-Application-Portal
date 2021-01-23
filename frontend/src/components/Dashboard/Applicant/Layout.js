@@ -86,7 +86,7 @@ const Layout = () => {
                 </TableCell>
                 <TableCell align="center">{item.salary}</TableCell>
                 <TableCell align="center">{item.duration}</TableCell>
-                <TableCell align="center">{new Date(item.deadline).toDateString()}</TableCell>
+                <TableCell align="center">{new Date(item.deadline).toGMTString()}</TableCell>
                 <TableCell align="center">
                   <RatingStars readOnly precision={0.5} value={item.avgRating} />
                 </TableCell>
