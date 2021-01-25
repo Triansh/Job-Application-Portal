@@ -25,6 +25,5 @@ App will start at localhost:3000. Use these commands to start app in the fronten
 Server will start at localhost:5000. Use these commands to run the server in backend directory.
 
 ```
-    cd backend
     npm start
 ```
