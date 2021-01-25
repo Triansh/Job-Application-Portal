@@ -31,6 +31,10 @@ const applicationSchema = new mongoose.Schema(
 			type: String,
 			default: APPLICATION_STATUS.APPLIED,
 		},
+		dateOfJoining: {
+			type: Date,
+			default: Date.now(),
+		},
 		createdAt: {
 			type: Date,
 			default: Date.now(),
@@ -40,7 +44,6 @@ const applicationSchema = new mongoose.Schema(
 );
 
 applicationSchema.index({ job: 1, applicant: 1 }, { unique: true });
-
 
 const applicationModel = mongoose.model('Application', applicationSchema);
 module.exports = applicationModel;

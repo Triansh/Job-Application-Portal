@@ -99,10 +99,11 @@ exports.getNRApplicationsForJob = handleAsync(async (req, res, next) => {
 
 // This updates the status of application by recruiter
 exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
-	const app = await Application.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-		runValidators: true,
-	})
+	const app = await Application.findByIdAndUpdate(
+		req.params.id,
+		{ status: req.body.status, dateOfJoining: new Date() },
+		{ new: true, runValidators: true }
+	)
 		.populate({ path: 'job', select: 'positions _id' })
 		.populate({ path: 'applicant', select: 'email _id' })
 		.populate({ path: 'recruiter', select: '_id name' });
@@ -147,7 +148,7 @@ exports.getMyEmployees = handleAsync(async (req, res, next) => {
 			select: 'name review avgRating',
 		})
 		.populate({ path: 'job', select: 'title type' })
-		.select('status createdAt recruiter');
+		.select('status recruiter dateOfJoining');
 
 	res.status(200).json({
 		status: 'success',

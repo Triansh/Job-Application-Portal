@@ -36,7 +36,7 @@ const MyEmployees = () => {
     { label: 'Name of Employee', id: 'applicant.name' },
     { label: 'Job Title', id: 'job.title', nested: true },
     { label: 'Type of Job', id: 'job.type' },
-    { label: 'Date of Joining', id: 'createdAt' },
+    { label: 'Date of Joining', id: 'dateOfJoining' },
     { label: 'Employee Rating', id: 'avgRating' },
   ];
 
@@ -90,7 +90,7 @@ const MyEmployees = () => {
                 <TableCell align="center" style={{ textTransform: 'capitalize' }}>
                   {item.job.type.split('-').join(' ')}
                 </TableCell>
-                <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
+                <TableCell align="center">{new Date(item.dateOfJoining).toDateString()}</TableCell>
                 <TableCell align="center">
                   <RatingStars readOnly precision={0.5} value={item.applicant.avgRating} />
                 </TableCell>

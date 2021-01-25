@@ -101,7 +101,7 @@ const JobApplications = () => {
                 <TableCell align="center">{item.applicant.name}</TableCell>
                 <TableCell align="center">{item.applicant.skills.join(', ')}</TableCell>
                 <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <DisplayEducation educationList={item.applicant.education} />
                 </TableCell>
                 <TableCell align="center">{item.sop}</TableCell>
