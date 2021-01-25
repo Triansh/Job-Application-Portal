@@ -26,7 +26,7 @@ const EducationItem = ({ edu, setEdu, index }) => {
           title={<TextField fullWidth label="Name of Institution" name="institution" onChange={(e) => handleChange(e)} value={edu[index].institution} />}
           onChange={(e) => handleChange(e)}
           action={
-            <IconButton onClick={(e) => deleteItem(index)}>
+            <IconButton color="secondary" onClick={(e) => deleteItem(index)}>
               <DeleteIcon />
             </IconButton>
           }

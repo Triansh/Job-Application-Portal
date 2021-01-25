@@ -14,7 +14,7 @@ const EducationList = ({ edu, setEdu }) => {
     <Card>
       <CardHeader
         action={
-          <IconButton onClick={AddItem}>
+          <IconButton color="primary" onClick={AddItem}>
             <AddIcon />
           </IconButton>
         }

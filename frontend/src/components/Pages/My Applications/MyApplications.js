@@ -36,7 +36,7 @@ const MyApplications = () => {
     { label: 'Job Title', id: 'job.title' },
     { label: 'Recruiter Name', id: 'recruiter.name', nested: true },
     { label: 'Salary', id: 'job.salary' },
-    { label: 'Date of posting', id: 'createdAt' },
+    { label: 'Date of Joining', id: 'createdAt' },
     { label: 'Status', id: 'status' },
   ];
 
@@ -87,7 +87,7 @@ const MyApplications = () => {
                 <TableCell align="center">{item.job.title}</TableCell>
                 <TableCell align="center">{item.recruiter.name}</TableCell>
                 <TableCell align="center">{item.job.salary}</TableCell>
-                <TableCell align="center">{new Date(item.createdAt).toDateString()}</TableCell>
+                <TableCell align="center">{item.status === "Accepted" ? new Date(item.createdAt).toDateString() : "NA"}</TableCell>
                 <TableCell align="center">
                   <ApplicationStatusButtons status={item.status} />
                 </TableCell>
