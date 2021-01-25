@@ -6,6 +6,7 @@ const handleAsync = require('../utils/handleAsync');
 const AppError = require('../utils/AppError');
 const { APPLICATION_STATUS, JOB_STATUS } = require('../utils/constants');
 const jobStatusHandler = require('../utils/jobStatusHandler');
+const sendEmail = require('../utils/sendEmail');
 
 // ---------------------------------------------------------------- DEBUGGING
 exports.getApplication = handleAsync(async (req, res, next) => {
@@ -62,7 +63,7 @@ exports.createApplication = handleAsync(async (req, res, next) => {
 
 	await jobStatusHandler(req.params.id);
 
-	console.log("THis is just passed")
+	console.log('THis is just passed');
 	res.status(201).json({
 		status: 'success',
 		data: { app },
@@ -101,7 +102,10 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 	const app = await Application.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
-	}).populate({ path: 'job', select: 'positions _id' });
+	})
+		.populate({ path: 'job', select: 'positions _id' })
+		.populate({ path: 'applicant', select: 'email _id' })
+		.populate({ path: 'recruiter', select: '_id name' });
 
 	if (!app) return next(new AppError('The application doesnot exist.', 404));
 
@@ -117,6 +121,11 @@ exports.updateApplicationStatus = handleAsync(async (req, res, next) => {
 			{ _id: { $ne: app._id }, applicant: applicantId },
 			{ status: APPLICATION_STATUS.REJECTED }
 		);
+		await sendEmail({
+			to: app.applicant.email,
+			subject: 'Job Acceptance',
+			text: `${app.recruiter.name} (Recruiter) accepted your application. Congrats!`,
+		});
 	}
 
 	res.status(201).json({
