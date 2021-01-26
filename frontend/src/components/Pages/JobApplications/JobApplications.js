@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { TableBody, TableCell, TableRow } from '@material-ui/core';
+import { TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 
 import { getJobApplications } from '../../../api/jobRequests';
 import { updateApplicationStatus } from '../../../api/applicationRequests';
@@ -19,10 +19,12 @@ import Table from '../../Table/Table';
 
 import DisplayEducation from '../../Education/DisplayEducation';
 
+import { ApplicationStatusButtons, ApplicationStatusUpdateButtons } from '../../Status/ApplicationStatus';
+
 import RatingStars from '../../Controls/RatingStars';
 import DialogBox from '../../Controls/DialogBox';
-
-import { ApplicationStatusButtons, ApplicationStatusUpdateButtons } from '../../Status/ApplicationStatus';
+import Popup from '../../Controls/Popup';
+import Button from '../../Controls/Button';
 
 const JobApplications = () => {
   const [apps, setApps] = useState([]);
@@ -33,6 +35,8 @@ const JobApplications = () => {
   const [rejectDialog, setRejectDialog] = useState({ isOpen: false });
   const [acceptDialog, setAcceptDialog] = useState({ isOpen: false });
   const [shortlistDialog, setShortlistDialog] = useState({ isOpen: false });
+  const [sopPopup, setSopPopup] = useState(false);
+  const [sopToView, setSopToView] = useState('');
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -104,7 +108,17 @@ const JobApplications = () => {
                 <TableCell align="center">
                   <DisplayEducation educationList={item.applicant.education} />
                 </TableCell>
-                <TableCell align="center">{item.sop}</TableCell>
+                <TableCell align="center">
+                  <Button
+                    size="small"
+                    color="primary"
+                    text="View SOP"
+                    onClick={() => {
+                      setSopPopup(true);
+                      setSopToView(item.sop);
+                    }}
+                  />
+                </TableCell>
                 <TableCell align="center">
                   <RatingStars readOnly precision={0.5} value={item.applicant.avgRating} />
                 </TableCell>
@@ -119,6 +133,9 @@ const JobApplications = () => {
           </TableBody>
         </Table>
       </PageHeader>
+      <Popup width="sm" title="Statement of Purpose" openPopup={sopPopup} setOpenPopup={setSopPopup}>
+        <Typography variant="body1">{sopToView}</Typography>
+      </Popup>
       <DialogBox action="Accept" confirmDialog={acceptDialog} setConfirmDialog={setAcceptDialog} />
       <DialogBox action="Shortlist" confirmDialog={shortlistDialog} setConfirmDialog={setShortlistDialog} />
       <DialogBox action="Reject" confirmDialog={rejectDialog} setConfirmDialog={setRejectDialog} />

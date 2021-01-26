@@ -97,7 +97,7 @@ const Layout = () => {
                   <TableCell align="center">{new Date(createdAt).toDateString()}</TableCell>
                   <TableCell align="center">{noOfApplicants}</TableCell>
                   <TableCell align="center">{remainingPositions}</TableCell>
-                  <TableCell align="center">{new Date(deadline).toGMTString()}</TableCell>
+                  <TableCell align="center">{new Date(deadline).toLocaleString()}</TableCell>
                   <TableCell align="center">
                     <IconButton color="primary" onClick={() => onEditIconClick(item)}>
                       <CreateIcon />
